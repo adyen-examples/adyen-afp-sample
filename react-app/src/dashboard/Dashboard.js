@@ -25,7 +25,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 
 import DashboardHeader from "./DashboardHeader.js";
 import DashboardDrawer from "./DashboardDrawer.js";
@@ -33,12 +33,15 @@ import DashboardDrawer from "./DashboardDrawer.js";
 const drawerWidth = 240;
 
 export default function Dashboard() {
+
+    const { accountHolderId } = useParams();
+
   return (
     <Box sx={{ display: 'flex' }}>
 
       <DashboardHeader/>
 
-      <DashboardDrawer/>
+      <DashboardDrawer id={accountHolderId}/>
 
       <Box
         component="main"
@@ -46,7 +49,7 @@ export default function Dashboard() {
       >
         <Toolbar />
         <Typography paragraph>
-          My analytics
+          Home
         </Typography>
       </Box>
     </Box>

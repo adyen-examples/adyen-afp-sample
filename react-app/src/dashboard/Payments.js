@@ -49,7 +49,7 @@ export default function Products() {
       >
         <Toolbar />
         <Typography paragraph>
-          My products
+          My payments
         </Typography>
       </Box>
     </Box>

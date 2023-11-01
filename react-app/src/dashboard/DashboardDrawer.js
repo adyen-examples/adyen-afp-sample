@@ -16,7 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import BarChartIcon from '@mui/icons-material/BarChart';
+import Home from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
@@ -29,7 +29,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
-export default function DashboardDrawer() {
+export default function DashboardDrawer(props) {
   return (
       <Drawer
         sx={{
@@ -46,15 +46,15 @@ export default function DashboardDrawer() {
         <Toolbar />
         <Divider />
         <List>
-            <ListItem disablePadding button component={RouterLink} to="/dashboard">
+            <ListItem disablePadding button component={RouterLink} to={"/dashboard/" + props.id}>
               <ListItemButton>
                 <ListItemIcon>
-                  <BarChartIcon />
+                  <Home />
                 </ListItemIcon>
-                <ListItemText primary="Analytics" />
+                <ListItemText primary="Home" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding button component={RouterLink} to="/products">
+            <ListItem disablePadding button component={RouterLink} to={"/products/" + props.id}>
               <ListItemButton>
                 <ListItemIcon>
                   <RestaurantIcon />
@@ -62,7 +62,7 @@ export default function DashboardDrawer() {
                 <ListItemText primary="Products" />
               </ListItemButton>
             </ListItem>
-            <ListItem key="payments" disablePadding>
+            <ListItem disablePadding button component={RouterLink} to={"/payments/" + props.id}>
               <ListItemButton>
                 <ListItemIcon>
                   <PaymentsIcon />
@@ -70,7 +70,7 @@ export default function DashboardDrawer() {
                 <ListItemText primary="Payments" />
               </ListItemButton>
             </ListItem>
-            <ListItem key="payouts" disablePadding>
+            <ListItem disablePadding button component={RouterLink} to={"/payouts/" + props.id}>
               <ListItemButton>
                 <ListItemIcon>
                   <AccountBalanceIcon />

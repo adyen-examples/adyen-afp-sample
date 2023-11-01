@@ -12,6 +12,8 @@ import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
+import { useNavigate } from 'react-router-dom';
+
 import Footer from "../layout/Footer.js";
 import SmallBanner from "../layout/SmallBanner.js";
 import LoginInfo from "./LoginInfo.js";
@@ -26,6 +28,8 @@ function Login() {
 
     const [invalidLogin, setInvalidLogin] = useState(false);
 
+    const navigate = useNavigate()
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({
@@ -37,25 +41,18 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
 
         setInvalidLogin(false);
 
-
         axios.post('/api/login', formData)
             .then((response) => {
-            const statusCode = response.status;
-            console.log(statusCode);
-
-        //this.props.history.push('/dashboard');
-    })
-    .catch((error) => {
-        // Handle request error, if any
-        console.error('Request error:', error);
-        setInvalidLogin(true);
-      });
+                navigate('/dashboard/' + response.data);
+        })
+        .catch((error) => {
+            console.error('Request error:', error);
+            setInvalidLogin(true);
+        });
     };
-
 
     return (
 

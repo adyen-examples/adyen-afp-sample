@@ -28,7 +28,7 @@ public class LoginController {
         Optional<AccountHolder> accountHolder = getAccountHolderService().getAccountHolder(userLogin.getUsername());
 
         if(accountHolder.isPresent()) {
-            return ResponseEntity.ok().body("Ok");
+            return ResponseEntity.ok().body(accountHolder.get().getId());
         } else {
             return ResponseEntity.status(403).body("Invalid username or password");
         }
