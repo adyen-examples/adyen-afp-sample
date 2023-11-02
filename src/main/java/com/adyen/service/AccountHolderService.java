@@ -1,6 +1,5 @@
 package com.adyen.service;
 
-import com.adyen.controller.LoginController;
 import com.adyen.model.balanceplatform.AccountHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * Service of AccountHolder entity
+ * Service of the AccountHolder entity
  */
 @Service
 public class AccountHolderService {

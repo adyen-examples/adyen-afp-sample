@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer'
 import Container from '@mui/material/Container';
@@ -25,7 +27,9 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+
+import { useNavigate } from 'react-router-dom';
 
 import DashboardHeader from "./DashboardHeader.js";
 import DashboardDrawer from "./DashboardDrawer.js";
@@ -34,19 +38,20 @@ const drawerWidth = 240;
 
 export default function Dashboard() {
 
-    const { accountHolderId } = useParams();
+    const navigate = useNavigate()
 
-//    useEffect(() => {
-//        axios.get('https://api.example.com/data')
-//          .then((response) => {
-//            setData(response.data);
-//            setLoading(false);
-//          })
-//          .catch((error) => {
-//            console.error('API request error:', error);
-//            setLoading(false);
-//          });
-//    }, []);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        axios.post('/api/dashboard/getAccountHolder')
+          .then((response) => {
+            setData(response.data);
+          })
+          .catch((error) => {
+            console.error('API request error:', error);
+            navigate('/');
+          });
+    }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -69,6 +74,8 @@ export default function Dashboard() {
             <Chip label="Status" sx={{ fontSize: "20px" }}/>
         </Divider>
         <br/><br/>
+
+        {data.id}
 
 
       </Box>
