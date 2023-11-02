@@ -46,7 +46,7 @@ function Login() {
 
         axios.post('/api/login', formData)
             .then((response) => {
-                navigate('/dashboard/' + response.data);
+                navigate('/dashboard');
         })
         .catch((error) => {
             console.error('Request error:', error);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer'
 import Container from '@mui/material/Container';
-
+import Chip from '@mui/material/Chip';
 import Link from '@mui/material/Link';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -36,21 +36,41 @@ export default function Dashboard() {
 
     const { accountHolderId } = useParams();
 
+//    useEffect(() => {
+//        axios.get('https://api.example.com/data')
+//          .then((response) => {
+//            setData(response.data);
+//            setLoading(false);
+//          })
+//          .catch((error) => {
+//            console.error('API request error:', error);
+//            setLoading(false);
+//          });
+//    }, []);
+
   return (
     <Box sx={{ display: 'flex' }}>
 
       <DashboardHeader/>
 
-      <DashboardDrawer id={accountHolderId}/>
+      <DashboardDrawer/>
 
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-      >
+        <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              width="100%"
+              sx={{ p: 3 }}
+        >
+
         <Toolbar />
-        <Typography paragraph>
-          Home
-        </Typography>
+
+        <Divider>
+            <Chip label="Status" sx={{ fontSize: "20px" }}/>
+        </Divider>
+        <br/><br/>
+
+
       </Box>
     </Box>
   );

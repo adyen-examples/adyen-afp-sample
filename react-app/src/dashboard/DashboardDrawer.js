@@ -1,4 +1,6 @@
 import * as React from 'react';
+import axios from "axios";
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer'
 import Container from '@mui/material/Container';
@@ -25,12 +27,24 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
-export default function DashboardDrawer(props) {
-  return (
+export default function DashboardDrawer() {
+
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        axios.post('/api/logout')
+            .then((response) => {
+                navigate('/');
+        })
+        .catch((error) => {
+            console.error('Request error:', error);
+        });
+    };
+    return (
       <Drawer
         sx={{
           width: drawerWidth,
@@ -46,7 +60,7 @@ export default function DashboardDrawer(props) {
         <Toolbar />
         <Divider />
         <List>
-            <ListItem disablePadding button component={RouterLink} to={"/dashboard/" + props.id}>
+            <ListItem disablePadding button component={RouterLink} to={"/dashboard/"}>
               <ListItemButton>
                 <ListItemIcon>
                   <Home />
@@ -54,7 +68,7 @@ export default function DashboardDrawer(props) {
                 <ListItemText primary="Home" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding button component={RouterLink} to={"/products/" + props.id}>
+            <ListItem disablePadding button component={RouterLink} to={"/products/"}>
               <ListItemButton>
                 <ListItemIcon>
                   <RestaurantIcon />
@@ -62,7 +76,7 @@ export default function DashboardDrawer(props) {
                 <ListItemText primary="Products" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding button component={RouterLink} to={"/payments/" + props.id}>
+            <ListItem disablePadding button component={RouterLink} to={"/payments/"}>
               <ListItemButton>
                 <ListItemIcon>
                   <PaymentsIcon />
@@ -70,7 +84,7 @@ export default function DashboardDrawer(props) {
                 <ListItemText primary="Payments" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding button component={RouterLink} to={"/payouts/" + props.id}>
+            <ListItem disablePadding button component={RouterLink} to={"/payouts/"}>
               <ListItemButton>
                 <ListItemIcon>
                   <AccountBalanceIcon />
@@ -89,7 +103,7 @@ export default function DashboardDrawer(props) {
                 <ListItemText primary="Settings" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding button component={RouterLink} to="/">
+            <ListItem disablePadding button onClick={() => handleLogout()}>
               <ListItemButton>
                 <ListItemIcon>
                    <LogoutIcon />

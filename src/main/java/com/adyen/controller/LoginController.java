@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-public class LoginController {
+public class LoginController extends BaseController {
 
     private final Logger log = LoggerFactory.getLogger(LoginController.class);
 
@@ -28,10 +26,17 @@ public class LoginController {
         Optional<AccountHolder> accountHolder = getAccountHolderService().getAccountHolder(userLogin.getUsername());
 
         if(accountHolder.isPresent()) {
-            return ResponseEntity.ok().body(accountHolder.get().getId());
+            setUserIdOnSession(accountHolder.get().getId());
+            return ResponseEntity.ok().body("");
         } else {
             return ResponseEntity.status(403).body("Invalid username or password");
         }
+    }
+
+    @PostMapping("/logout")
+    ResponseEntity<String>  logout()  {
+        removeUserIdFromSession();
+        return ResponseEntity.ok().body("");
     }
 
     public AccountHolderService getAccountHolderService() {

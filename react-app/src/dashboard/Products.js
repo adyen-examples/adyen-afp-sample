@@ -24,11 +24,13 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Chip from '@mui/material/Chip';
 
 import { Link as RouterLink, useParams } from "react-router-dom";
 
 import DashboardHeader from "./DashboardHeader.js";
 import DashboardDrawer from "./DashboardDrawer.js";
+import ProductList from "./ProductList.js"
 
 const drawerWidth = 240;
 
@@ -41,16 +43,22 @@ export default function Products() {
 
       <DashboardHeader/>
 
-      <DashboardDrawer id={accountHolderId}/>
+      <DashboardDrawer />
 
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-      >
+        <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              width="100%"
+              sx={{ p: 3 }}
+        >
+
         <Toolbar />
-        <Typography paragraph>
-          My products
-        </Typography>
+
+        <Divider>
+            <Chip label="My Products" sx={{ fontSize: "20px" }}/>
+        </Divider>
+        <ProductList/>
       </Box>
     </Box>
   );

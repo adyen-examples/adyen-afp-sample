@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer'
 import Container from '@mui/material/Container';
+import Chip from '@mui/material/Chip';
 
 import Link from '@mui/material/Link';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -41,16 +42,24 @@ export default function Products() {
 
       <DashboardHeader/>
 
-      <DashboardDrawer id={accountHolderId}/>
+      <DashboardDrawer/>
 
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-      >
+        <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              width="100%"
+              sx={{ p: 3 }}
+        >
+
         <Toolbar />
-        <Typography paragraph>
-          My payouts
-        </Typography>
+
+        <Divider>
+            <Chip label="My payouts" sx={{ fontSize: "20px" }}/>
+        </Divider>
+        <br/><br/>
+
+
       </Box>
     </Box>
   );
