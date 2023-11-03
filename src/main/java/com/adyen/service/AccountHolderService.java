@@ -27,10 +27,8 @@ public class AccountHolderService {
         Optional<AccountHolder> accountHolder = Optional.empty();
 
         try {
-
             accountHolder = Optional.of(getApiClient().getAccountHoldersApi().getAccountHolder(accountHolderId));
             log.info(accountHolder.toString());
-
         } catch (Exception e) {
             log.error(e.toString(), e);
             //log.error(e.getMessage(), e);

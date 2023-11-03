@@ -17,7 +17,7 @@ public class ApiClient {
 
     public AccountHoldersApi getAccountHoldersApi() {
         Client client = new Client(
-                applicationProperty.getLemApiKey(),
+                applicationProperty.getBclApiKey(),
                 Environment.valueOf(applicationProperty.getEnvironment()));
 
         return new AccountHoldersApi(client);

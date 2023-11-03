@@ -52,12 +52,12 @@ public class OnboardingLinkService {
      * @return
      */
     private OnboardingLinkInfo getOnboardingLinkConfiguration() {
-        OnboardingLinkInfo onboardingLinkInfo = null;
+        OnboardingLinkInfo onboardingLinkInfo = new OnboardingLinkInfo();
 
         // control the page language
         onboardingLinkInfo.setLocale("en-US");
         // link to bring users back to the platform
-        onboardingLinkInfo.setRedirectUrl("http://locahost:3000/dashboard");
+        onboardingLinkInfo.setRedirectUrl("http://localhost:3000/dashboard");
         // custom theme applied to the Hosted Onboarding app. Must be already created in the Customer Area
         onboardingLinkInfo.setThemeId(getApplicationProperty().getHostedOnboardingThemeId());
         // additional settings

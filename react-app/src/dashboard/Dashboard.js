@@ -53,7 +53,18 @@ export default function Dashboard() {
             console.error('API request error:', error);
             navigate('/');
           });
+
     }, []);
+
+    const generateOnboardingLink = () => {
+        axios.post('/api/dashboard/getOnboardingLink')
+          .then((response) => {
+            window.location.href = response.data;
+          })
+          .catch((error) => {
+            console.error('API request error:', error);
+          });
+      };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -80,16 +91,16 @@ export default function Dashboard() {
         {/*
         Display relevant message based on AccountHolderStatus value
         */}
-        {data.status === "VALID" && (<VerificationSuccess />) }
-        {data.status === "INVALID" && (<VerificationInvalid />) }
-        {data.status === "PENDING" && (<VerificationPending />) }
+        {data.status === "VALID" && (<VerificationSuccess handleClick={generateOnboardingLink}/>) }
+        {data.status === "INVALID" && (<VerificationInvalid handleClick={generateOnboardingLink}/>) }
+        {data.status === "PENDING" && (<VerificationPending handleClick={generateOnboardingLink}/>) }
 
       </Box>
     </Box>
   );
 }
 
-const VerificationSuccess = () => {
+const VerificationSuccess = ({ handleClick }) => {
     return(
 
         <Box style={{ width: '70%', height: '50%'}} textAlign="center" >
@@ -104,6 +115,7 @@ const VerificationSuccess = () => {
                 type="submit"
                 variant="contained"
                 sx={{ backgroundColor: "#0abf53", borderRadius: 25, color: "white", "&:hover": {backgroundColor: "green"} }}
+                onClick={handleClick}
                 >
                     Check your information
             </Button>
@@ -111,7 +123,7 @@ const VerificationSuccess = () => {
     );
 }
 
-const VerificationPending = () => {
+const VerificationPending = ({ handleClick }) => {
     return(
 
         <Box style={{ width: '70%', height: '50%'}} textAlign="center" >
@@ -129,6 +141,7 @@ const VerificationPending = () => {
                 type="submit"
                 variant="contained"
                 sx={{ backgroundColor: "#0abf53", borderRadius: 25, color: "white", "&:hover": {backgroundColor: "green"} }}
+                onClick={handleClick}
                 >
                     Update your information
             </Button>
@@ -136,7 +149,7 @@ const VerificationPending = () => {
     );
 }
 
-const VerificationInvalid = () => {
+const VerificationInvalid = ({ handleClick }) => {
     return(
 
         <Box style={{ width: '70%', height: '50%'}} textAlign="center" >
@@ -153,6 +166,7 @@ const VerificationInvalid = () => {
                 type="submit"
                 variant="contained"
                 sx={{ backgroundColor: "#0abf53", borderRadius: 25, color: "white", "&:hover": {backgroundColor: "green"} }}
+                onClick={handleClick}
                 >
                     Correct your information
             </Button>

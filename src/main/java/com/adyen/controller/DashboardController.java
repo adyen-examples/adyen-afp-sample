@@ -2,16 +2,15 @@ package com.adyen.controller;
 
 import com.adyen.model.User;
 import com.adyen.model.balanceplatform.AccountHolder;
+import com.adyen.model.legalentitymanagement.OnboardingLink;
 import com.adyen.service.AccountHolderService;
+import com.adyen.service.OnboardingLinkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -23,6 +22,9 @@ public class DashboardController extends BaseController {
 
     @Autowired
     private AccountHolderService accountHolderService;
+
+    @Autowired
+    private OnboardingLinkService onboardingLinkService;
 
     /**
      * Get User who has logged in (user id found in Session)
@@ -51,6 +53,33 @@ public class DashboardController extends BaseController {
                 );
     }
 
+    @PostMapping("/getOnboardingLink")
+    ResponseEntity<String> getOnboardingLink() {
+
+        String legalEntityId;
+
+        if (getUserIdOnSession() == null) {
+            log.warn("User is not logged in");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Optional<AccountHolder> accountHolder = getAccountHolderService().getAccountHolder(getUserIdOnSession());
+
+        if(accountHolder.isPresent()) {
+            legalEntityId = accountHolder.get().getLegalEntityId();
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Optional<OnboardingLink> onboardingLink = getOnboardingLinkService().getOnboardingLink(legalEntityId);
+
+        return onboardingLink.map(response -> new ResponseEntity<>(response.getUrl(), HttpStatus.ACCEPTED))
+                .orElseGet(() -> {
+                            log.warn("OnboardingLink not found legalEntityId: " + legalEntityId);
+                            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                        }
+                );
+    }
 
     public AccountHolderService getAccountHolderService() {
         return accountHolderService;
@@ -58,5 +87,13 @@ public class DashboardController extends BaseController {
 
     public void setAccountHolderService(AccountHolderService accountHolderService) {
         this.accountHolderService = accountHolderService;
+    }
+
+    public OnboardingLinkService getOnboardingLinkService() {
+        return onboardingLinkService;
+    }
+
+    public void setOnboardingLinkService(OnboardingLinkService onboardingLinkService) {
+        this.onboardingLinkService = onboardingLinkService;
     }
 }

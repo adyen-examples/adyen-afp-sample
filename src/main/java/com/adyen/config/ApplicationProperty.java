@@ -12,6 +12,9 @@ public class ApplicationProperty {
     @Value("${LEM_API_KEY}")
     private String lemApiKey;
 
+    @Value("${BCL_API_KEY}")
+    private String bclApiKey;
+
     @Value("${HOSTED_ONBOARDING_THEME_ID}")
     private String hostedOnboardingThemeId;
 
@@ -37,5 +40,13 @@ public class ApplicationProperty {
 
     public void setHostedOnboardingThemeId(String hostedOnboardingThemeId) {
         this.hostedOnboardingThemeId = hostedOnboardingThemeId;
+    }
+
+    public String getBclApiKey() {
+        return bclApiKey;
+    }
+
+    public void setBclApiKey(String bclApiKey) {
+        this.bclApiKey = bclApiKey;
     }
 }
