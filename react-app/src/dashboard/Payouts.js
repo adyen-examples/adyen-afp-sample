@@ -31,8 +31,6 @@ import { Link as RouterLink, useParams } from "react-router-dom";
 import DashboardHeader from "./DashboardHeader.js";
 import DashboardDrawer from "./DashboardDrawer.js";
 
-const drawerWidth = 240;
-
 export default function Products() {
 
     const { accountHolderId } = useParams();

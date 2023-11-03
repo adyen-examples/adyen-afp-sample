@@ -12,6 +12,9 @@ public class ApplicationProperty {
     @Value("${LEM_API_KEY}")
     private String lemApiKey;
 
+    @Value("${HOSTED_ONBOARDING_THEME_ID}")
+    private String hostedOnboardingThemeId;
+
     public String getEnvironment() {
         return environment;
     }
@@ -26,5 +29,13 @@ public class ApplicationProperty {
 
     public void setLemApiKey(String lemApiKey) {
         this.lemApiKey = lemApiKey;
+    }
+
+    public String getHostedOnboardingThemeId() {
+        return hostedOnboardingThemeId;
+    }
+
+    public void setHostedOnboardingThemeId(String hostedOnboardingThemeId) {
+        this.hostedOnboardingThemeId = hostedOnboardingThemeId;
     }
 }

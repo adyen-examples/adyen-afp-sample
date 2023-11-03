@@ -1,5 +1,6 @@
 package com.adyen.controller;
 
+import com.adyen.model.User;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.service.AccountHolderService;
 import org.slf4j.Logger;
@@ -24,23 +25,28 @@ public class DashboardController extends BaseController {
     private AccountHolderService accountHolderService;
 
     /**
-     * Get AccountHolder by id
+     * Get User who has logged in (user id found in Session)
+     *
      * @return
      */
-    @PostMapping("/getAccountHolder")
-    ResponseEntity<AccountHolder> getAccountHolder()  {
+    @PostMapping("/getUser")
+    ResponseEntity<User> getUser() {
 
-        if(getUserIdOnSession() == null) {
+        if (getUserIdOnSession() == null) {
             log.warn("User is not logged in");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         Optional<AccountHolder> accountHolder = getAccountHolderService().getAccountHolder(getUserIdOnSession());
 
-        return accountHolder.map(response -> ResponseEntity.ok().body(response))
+        return accountHolder.map(response -> {
+                    User user = new User();
+                    user.setStatus(getAccountHolderService().getStatus(accountHolder.get()));
+                    return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
+                })
                 .orElseGet(() -> {
-                        log.warn("AccountHolder not found id: " + getUserIdOnSession());
-                        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                            log.warn("User not found id: " + getUserIdOnSession());
+                            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
                         }
                 );
     }
