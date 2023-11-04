@@ -63,13 +63,13 @@ function IndividualSignupForm() {
         fullWidth
         required
       >
-        <MenuItem value="usa">USA</MenuItem>
-        <MenuItem value="canada">Canada</MenuItem>
-        <MenuItem value="canada">France</MenuItem>
-        <MenuItem value="canada">Germany</MenuItem>
-        <MenuItem value="canada">Italy</MenuItem>
-        <MenuItem value="canada">The Netherlands</MenuItem>
-        <MenuItem value="canada">United Kingdom</MenuItem>
+        <MenuItem value="US">USA</MenuItem>
+        <MenuItem value="CA">Canada</MenuItem>
+        <MenuItem value="FR">France</MenuItem>
+        <MenuItem value="DE">Germany</MenuItem>
+        <MenuItem value="IT">Italy</MenuItem>
+        <MenuItem value="NL">The Netherlands</MenuItem>
+        <MenuItem value="UK">United Kingdom</MenuItem>
       </Select>
 </Box>
       <FormControlLabel

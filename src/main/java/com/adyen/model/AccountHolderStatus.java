@@ -1,4 +1,4 @@
-package com.adyen.service;
+package com.adyen.model;
 
 public enum AccountHolderStatus {
     VALID,

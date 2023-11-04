@@ -1,7 +1,5 @@
 package com.adyen.model;
 
-import com.adyen.service.AccountHolderStatus;
-
 /**
  * User of the platform
  */

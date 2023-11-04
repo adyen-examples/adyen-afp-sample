@@ -1,7 +1,9 @@
 package com.adyen.service;
 
+import com.adyen.model.AccountHolderStatus;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.balanceplatform.AccountHolderCapability;
+import com.adyen.model.balanceplatform.AccountHolderInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.UUID;
 
 /**
  * Service of the AccountHolder entity
@@ -42,6 +44,7 @@ public class AccountHolderService {
      * valid: when all capabilities have verification status VALID
      * invalid: when there is at least one capability with verification status INVALID
      * pending: when there are no INVALID capability and there is at least one capability with verification status PENDING
+     *
      * @param accountHolder
      * @return
      */
@@ -68,6 +71,24 @@ public class AccountHolderService {
         }
 
         return status;
+    }
+
+    public AccountHolder create(String legalEntityId) {
+        AccountHolder accountHolder = null;
+
+        try {
+            AccountHolderInfo accountHolderInfo = new AccountHolderInfo()
+                    .legalEntityId(legalEntityId)
+                    .description("Liable account holder")
+                    .reference("SAMPLE-APP-" + UUID.randomUUID());
+            accountHolder = getApiClient().getAccountHoldersApi().createAccountHolder(accountHolderInfo);
+
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot create AccountHolder: " + e.getMessage());
+        }
+
+        return accountHolder;
     }
 
     protected ApiClient getApiClient() {
