@@ -51,3 +51,53 @@ ADYEN_HMAC_KEY=
 # Id of the Hosted Onboarding Theme created in the Customer Area
 HOSTED_ONBOARDING_THEME_ID=
 ```
+
+## 3. Run the application
+
+#### Run Java and React
+Run separately frontend and backend:
+```shell
+cd react-app
+npm start
+```
+
+```shell
+mvn spring-boot:run
+```
+
+Access [http://localhost:3000/](http://localhost:3000/)
+
+#### Build the application
+Build SpringBoot jar packaging the entire application and run it:
+```   
+mvn package
+java -jar target/adyen-afp-sample.jar
+```
+
+Access [http://localhost:8080/](http://localhost:8080/) 
+
+# Webhooks
+
+Webhooks deliver asynchronous notifications about the payment status and other events that are important to receive and process.
+You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
+
+### Webhook setup
+
+In the Customer Area under the `Developers → Webhooks` section, [create](https://docs.adyen.com/development-resources/webhooks/#set-up-webhooks-in-your-customer-area) a new `Standard webhook`.
+
+A good practice is to set up basic authentication, copy the generated HMAC Key and set it as an environment variable. The application will use this to verify the [HMAC signatures](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures/).
+
+Make sure the webhook is **enabled**, so it can receive notifications.
+
+### Expose an endpoint
+
+This demo provides a simple webhook implementation exposed at `/api/webhooks/notifications` that shows you how to receive, validate and consume the webhook payload.
+
+### Test your webhook
+
+The following webhooks `events` should be enabled:
+* **AUTHORISATION**
+
+
+To make sure that the Adyen platform can reach your application, we have written a [Webhooks Testing Guide](https://github.com/adyen-examples/.github/blob/main/pages/webhooks-testing.md)
+that explores several options on how you can easily achieve this (e.g. running on localhost or cloud).
