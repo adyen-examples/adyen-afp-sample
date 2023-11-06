@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 
@@ -8,13 +10,18 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import { useNavigate } from 'react-router-dom';
+
+import ErrorMessage from "../util/ErrorMessage.js";
 
 function OrganizationSignupForm() {
     const [formData, setFormData] = useState({
         legalName: "",
-        country: "",
+        countryCode: "",
         agreeTerms: false,
     });
+    const [invalidSignup, setInvalidSignup] = useState(false);
+    const navigate = useNavigate()
 
     const handleChange = (event) => {
         const { name, value, checked } = event.target;
@@ -26,12 +33,25 @@ function OrganizationSignupForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
+
+        setInvalidSignup(false);
+
+        axios.post('/api/signup/organisation', formData)
+            .then((response) => {
+                navigate('/dashboard');
+        })
+        .catch((error) => {
+            console.error('Request error:', error);
+            setInvalidSignup(true);
+        });
     };
 
 
     return (
         <form onSubmit={handleSubmit}>
+
+            {invalidSignup && <ErrorMessage msg="An error has occurred"/>}
+
             <Box sx={{ mb: 1 }}>
                 <InputLabel>Legal name *</InputLabel>
                 <TextField
@@ -46,19 +66,19 @@ function OrganizationSignupForm() {
             <Box sx={{ mb: 1 }}>
                 <InputLabel>Country *</InputLabel>
                 <Select
-                    name="country"
-                    value={formData.country}
+                    name="countryCode"
+                    value={formData.countryCode}
                     onChange={handleChange}
                     fullWidth
                     required
                 >
-                    <MenuItem value="usa">USA</MenuItem>
-                    <MenuItem value="canada">Canada</MenuItem>
-                    <MenuItem value="canada">France</MenuItem>
-                    <MenuItem value="canada">Germany</MenuItem>
-                    <MenuItem value="canada">Italy</MenuItem>
-                    <MenuItem value="canada">The Netherlands</MenuItem>
-                    <MenuItem value="canada">United Kingdom</MenuItem>
+                    <MenuItem value="US">USA</MenuItem>
+                    <MenuItem value="CA">Canada</MenuItem>
+                    <MenuItem value="FR">France</MenuItem>
+                    <MenuItem value="DE">Germany</MenuItem>
+                    <MenuItem value="IT">Italy</MenuItem>
+                    <MenuItem value="NL">The Netherlands</MenuItem>
+                    <MenuItem value="UK">United Kingdom</MenuItem>
                 </Select>
             </Box>
             <FormControlLabel

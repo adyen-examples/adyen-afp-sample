@@ -11,7 +11,7 @@ const Footer = () => {
             <Typography variant="body2" color="textSecondary" align="left">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Link href="/" color="textSecondary" underline="hover" >Home</Link>
-                {' • Policy • Cookies • Disclaimer'}
+                {' • Policy • Cookies'}
             </Typography>
             </td>
             <td>

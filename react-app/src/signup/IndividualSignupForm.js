@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import TextField from "@mui/material/TextField";
@@ -7,14 +9,19 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import { useNavigate } from 'react-router-dom';
+
+import ErrorMessage from "../util/ErrorMessage.js";
 
 function IndividualSignupForm() {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
-        country: "",
+        countryCode: "",
         agreeTerms: false,
     });
+    const [invalidSignup, setInvalidSignup] = useState(false);
+    const navigate = useNavigate()
 
     const handleChange = (event) => {
         const { name, value, checked } = event.target;
@@ -26,12 +33,24 @@ function IndividualSignupForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
-    };
 
+        setInvalidSignup(false);
+
+        axios.post('/api/signup/individual', formData)
+            .then((response) => {
+                navigate('/dashboard');
+        })
+        .catch((error) => {
+            console.error('Request error:', error);
+            setInvalidSignup(true);
+        });
+    };
 
     return (
     <form onSubmit={handleSubmit}>
+
+        {invalidSignup && <ErrorMessage msg="An error has occurred"/>}
+
     <Box sx={{ mb: 1 }}>
     <InputLabel>First name *</InputLabel>
       <TextField
@@ -57,8 +76,8 @@ function IndividualSignupForm() {
 <Box sx={{ mb: 1 }}>
 <InputLabel>Country *</InputLabel>
       <Select
-        name="country"
-        value={formData.country}
+        name="countryCode"
+        value={formData.countryCode}
         onChange={handleChange}
         fullWidth
         required
