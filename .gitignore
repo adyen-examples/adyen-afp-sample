@@ -5,4 +5,7 @@ target
 node_modules
 *.bat
 
+react-app/build
+react-app/node
+
 application-dev.properties
