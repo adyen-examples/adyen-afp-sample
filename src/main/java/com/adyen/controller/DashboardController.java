@@ -3,8 +3,8 @@ package com.adyen.controller;
 import com.adyen.model.User;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.legalentitymanagement.OnboardingLink;
-import com.adyen.service.AccountHolderService;
-import com.adyen.service.OnboardingLinkService;
+import com.adyen.service.ConfigurationAPIService;
+import com.adyen.service.LegalEntityManagementAPIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,9 @@ public class DashboardController extends BaseController {
     private final Logger log = LoggerFactory.getLogger(DashboardController.class);
 
     @Autowired
-    private AccountHolderService accountHolderService;
-
+    private ConfigurationAPIService configurationAPIService;
     @Autowired
-    private OnboardingLinkService onboardingLinkService;
+    private LegalEntityManagementAPIService legalEntityManagementAPIService;
 
     /**
      * Get User who has logged in (user id found in Session)
@@ -39,11 +38,11 @@ public class DashboardController extends BaseController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<AccountHolder> accountHolder = getAccountHolderService().getAccountHolder(getUserIdOnSession());
+        Optional<AccountHolder> accountHolder = getConfigurationAPIService().getAccountHolder(getUserIdOnSession());
 
         return accountHolder.map(response -> {
                     User user = new User();
-                    user.setStatus(getAccountHolderService().getStatus(accountHolder.get()));
+                    user.setStatus(getConfigurationAPIService().getAccountHolderStatus(accountHolder.get()));
                     return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
                 })
                 .orElseGet(() -> {
@@ -63,7 +62,7 @@ public class DashboardController extends BaseController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<AccountHolder> accountHolder = getAccountHolderService().getAccountHolder(getUserIdOnSession());
+        Optional<AccountHolder> accountHolder = getConfigurationAPIService().getAccountHolder(getUserIdOnSession());
 
         if(accountHolder.isPresent()) {
             legalEntityId = accountHolder.get().getLegalEntityId();
@@ -71,7 +70,7 @@ public class DashboardController extends BaseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Optional<OnboardingLink> onboardingLink = getOnboardingLinkService().getOnboardingLink(legalEntityId);
+        Optional<OnboardingLink> onboardingLink = getLegalEntityManagementAPIService().getOnboardingLink(legalEntityId);
 
         return onboardingLink.map(response -> new ResponseEntity<>(response.getUrl(), HttpStatus.ACCEPTED))
                 .orElseGet(() -> {
@@ -81,19 +80,19 @@ public class DashboardController extends BaseController {
                 );
     }
 
-    public AccountHolderService getAccountHolderService() {
-        return accountHolderService;
+    public ConfigurationAPIService getConfigurationAPIService() {
+        return configurationAPIService;
     }
 
-    public void setAccountHolderService(AccountHolderService accountHolderService) {
-        this.accountHolderService = accountHolderService;
+    public void setConfigurationAPIService(ConfigurationAPIService configurationAPIService) {
+        this.configurationAPIService = configurationAPIService;
     }
 
-    public OnboardingLinkService getOnboardingLinkService() {
-        return onboardingLinkService;
+    public LegalEntityManagementAPIService getLegalEntityManagementAPIService() {
+        return legalEntityManagementAPIService;
     }
 
-    public void setOnboardingLinkService(OnboardingLinkService onboardingLinkService) {
-        this.onboardingLinkService = onboardingLinkService;
+    public void setLegalEntityManagementAPIService(LegalEntityManagementAPIService legalEntityManagementAPIService) {
+        this.legalEntityManagementAPIService = legalEntityManagementAPIService;
     }
 }

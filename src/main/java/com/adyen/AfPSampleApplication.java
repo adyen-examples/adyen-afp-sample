@@ -28,9 +28,14 @@ public class AfPSampleApplication {
             throw new RuntimeException("LEM API key is undefined");
         }
 
-        if(getApplicationProperty().getEnvironment().isEmpty()) {
-            throw new RuntimeException("ENVIRONMENT is undefined");
+        if(getApplicationProperty().getBclApiKey().isEmpty()) {
+            throw new RuntimeException("BCL API key is undefined");
         }
+
+        if(getApplicationProperty().getHmacKey().isEmpty()) {
+            throw new RuntimeException("HMAC key is undefined");
+        }
+
     }
 
     public ApplicationProperty getApplicationProperty() {

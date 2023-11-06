@@ -2,7 +2,7 @@ package com.adyen.controller;
 
 import com.adyen.model.UserLogin;
 import com.adyen.model.balanceplatform.AccountHolder;
-import com.adyen.service.AccountHolderService;
+import com.adyen.service.ConfigurationAPIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,12 @@ public class LoginController extends BaseController {
     private final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    private AccountHolderService accountHolderService;
+    private ConfigurationAPIService configurationAPIService;
 
     @PostMapping("/login")
     ResponseEntity<String> login(@RequestBody UserLogin userLogin)  {
 
-        Optional<AccountHolder> accountHolder = getAccountHolderService().getAccountHolder(userLogin.getUsername());
+        Optional<AccountHolder> accountHolder = getConfigurationAPIService().getAccountHolder(userLogin.getUsername());
 
         if(accountHolder.isPresent()) {
             setUserIdOnSession(accountHolder.get().getId());
@@ -39,11 +39,11 @@ public class LoginController extends BaseController {
         return ResponseEntity.ok().body("");
     }
 
-    public AccountHolderService getAccountHolderService() {
-        return accountHolderService;
+    public ConfigurationAPIService getConfigurationAPIService() {
+        return configurationAPIService;
     }
 
-    public void setAccountHolderService(AccountHolderService accountHolderService) {
-        this.accountHolderService = accountHolderService;
+    public void setConfigurationAPIService(ConfigurationAPIService configurationAPIService) {
+        this.configurationAPIService = configurationAPIService;
     }
 }
