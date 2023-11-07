@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * Handling different AfP webhooks
+ * Helper class to process AfP events
  */
 @Service
 public class EventHandler {
