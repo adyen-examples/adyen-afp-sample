@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * Perform user login and logout
+ */
 @RestController
 @RequestMapping("/api")
 public class LoginController extends BaseController {
@@ -20,6 +23,12 @@ public class LoginController extends BaseController {
     @Autowired
     private ConfigurationAPIService configurationAPIService;
 
+    /**
+     * Perform user login.
+     * Username should be a valid AccountHolder id, password is ignored for demo purposes
+     * @param userLogin User credentials from Login form
+     * @return
+     */
     @PostMapping("/login")
     ResponseEntity<String> login(@RequestBody UserLogin userLogin)  {
 
@@ -33,6 +42,10 @@ public class LoginController extends BaseController {
         }
     }
 
+    /**
+     * Perform user logout, removing userId from HTTP Session.
+     * @return
+     */
     @PostMapping("/logout")
     ResponseEntity<String>  logout()  {
         removeUserIdFromSession();

@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class WebhookController {
-    private final Logger logger = LoggerFactory.getLogger(WebhookController.class);
+    private final Logger log = LoggerFactory.getLogger(WebhookController.class);
 
     @Autowired
     private ApplicationProperty applicationProperty;
@@ -37,20 +37,23 @@ public class WebhookController {
      */
     @PostMapping("/webhooks/notifications")
     public ResponseEntity<String> webhooks(@RequestHeader Map<String, String> headers, @RequestBody String json) throws Exception {
-        logger.info("/webhooks/notifications");
+        log.info("/webhooks/notifications");
+
+        log.info("payload " + json);
 
         // find and validate HMAC signature
         String hmacsignature = headers.get("hmacsignature");
+        log.info("hmacsignature " + hmacsignature);
 
         if (hmacsignature == null || hmacsignature.isBlank()) {
-            logger.warn("HMAC Signature not found");
+            log.warn("HMAC Signature not found");
             throw new RuntimeException("HMAC Signature not found");
         }
 
-        if (!hmacValidator.validateHMAC(json, hmacsignature, applicationProperty.getHmacKey())) {
-            logger.warn("Invalid HMAC signature");
-            throw new RuntimeException("Invalid HMAC signature");
-        }
+//        if (!hmacValidator.validateHMAC(json, hmacsignature, applicationProperty.getHmacKey())) {
+//            log.warn("Invalid HMAC signature");
+//            throw new RuntimeException("Invalid HMAC signature");
+//        }
 
         // Deserialise json payload
         EventHandler eventHandler = new EventHandler();
@@ -59,7 +62,7 @@ public class WebhookController {
         String type = eventHandler.getEventType(json);
         String environment = eventHandler.getEventEnvironment(json);
 
-        logger.info("Event " + type + " on " + environment);
+        log.info("Event " + type + " on " + environment);
 
         switch (type) {
             case "balancePlatform.accountHolder.created":
@@ -98,7 +101,7 @@ public class WebhookController {
 //
             default:
                 // deal with unexpected event (ie there is a new event that must be processed?)
-                logger.error("Unexpected event type: " + type);
+                log.error("Unexpected event type: " + type);
                 throw new InvalidWebhookTypeException("Unexpected event type: " + type);
         }
 

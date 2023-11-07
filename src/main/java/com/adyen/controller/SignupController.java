@@ -40,10 +40,10 @@ public class SignupController extends BaseController {
 
             BalanceAccount balanceAccount = getConfigurationAPIService().createBalanceAccount(accountHolder.getId());
 
-            log.info("Individual signup succesful legalEntity:{}, accountHolder:{}, balanceAccount:{}",
-                    legalEntity.getId(), balanceAccount.getAccountHolderId(), balanceAccount.getId());
+            log.info("Individual ({} {}) signup successful legalEntity:{}, accountHolder:{}, balanceAccount:{}",
+                    individualSignup.getFirstName(), individualSignup.getLastName(), legalEntity.getId(), balanceAccount.getAccountHolderId(), balanceAccount.getId());
 
-            // user login
+            // log in user (to enable redirect to the dashboard)
             setUserIdOnSession(accountHolder.getId());
 
             response = ResponseEntity.ok().body("");
@@ -67,10 +67,10 @@ public class SignupController extends BaseController {
 
             BalanceAccount balanceAccount = getConfigurationAPIService().createBalanceAccount(accountHolder.getId());
 
-            log.info("Organisation signup succesful legalEntity:{}, accountHolder:{}, balanceAccount:{}",
-                    legalEntity.getId(), balanceAccount.getAccountHolderId(), balanceAccount.getId());
+            log.info("Organisation ({}) signup successful legalEntity:{}, accountHolder:{}, balanceAccount:{}",
+                    organisationSignup.getLegalName(), legalEntity.getId(), balanceAccount.getAccountHolderId(), balanceAccount.getId());
 
-            // user login
+            // log in user (to enable redirect to the dashboard)
             setUserIdOnSession(accountHolder.getId());
 
             response = ResponseEntity.ok().body("");
