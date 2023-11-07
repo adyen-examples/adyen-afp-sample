@@ -36,7 +36,7 @@ export ADYEN_HMAC_KEY=yourHmacKey
 export HOSTED_ONBOARDING_THEME_ID=yourHostedOnboardingThemeId
 ```
 
-Alternatively, it's possible to define the variables in the `application.properties`.
+Alternatively, define the variables in the `config/application.properties`.
 ```txt
 BCL_API_KEY=yourBclApiKey
 LEM_API_KEY=yourLemApiKey
