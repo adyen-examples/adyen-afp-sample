@@ -5,6 +5,7 @@ import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.legalentitymanagement.OnboardingLink;
 import com.adyen.service.ConfigurationAPIService;
 import com.adyen.service.LegalEntityManagementAPIService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class DashboardController extends BaseController {
     }
 
     @PostMapping("/getOnboardingLink")
-    ResponseEntity<String> getOnboardingLink() {
+    ResponseEntity<String> getOnboardingLink(HttpServletRequest request) {
 
         String legalEntityId;
 
@@ -61,6 +62,9 @@ public class DashboardController extends BaseController {
             log.warn("User is not logged in");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
+        // get host (used to generate the returnUrl)
+        String host = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 
         Optional<AccountHolder> accountHolder = getConfigurationAPIService().getAccountHolder(getUserIdOnSession());
 
@@ -70,7 +74,7 @@ public class DashboardController extends BaseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Optional<OnboardingLink> onboardingLink = getLegalEntityManagementAPIService().getOnboardingLink(legalEntityId);
+        Optional<OnboardingLink> onboardingLink = getLegalEntityManagementAPIService().getOnboardingLink(legalEntityId, host);
 
         return onboardingLink.map(response -> new ResponseEntity<>(response.getUrl(), HttpStatus.ACCEPTED))
                 .orElseGet(() -> {

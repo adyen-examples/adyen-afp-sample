@@ -87,16 +87,17 @@ public class LegalEntityManagementAPIService {
     /**
      * Generate the Hosted Onboarding link for the Legal entity
      * @param legalEntityId
+     * @param host
      * @return
      */
-    public Optional<OnboardingLink> getOnboardingLink(String legalEntityId) {
+    public Optional<OnboardingLink> getOnboardingLink(String legalEntityId, String host) {
 
         Optional<OnboardingLink> onboardingLink = Optional.empty();
 
         try {
 
             onboardingLink = Optional.of(getHostedOnboardingApi()
-                    .getLinkToAdyenhostedOnboardingPage(legalEntityId, getOnboardingLinkConfiguration()));
+                    .getLinkToAdyenhostedOnboardingPage(legalEntityId, getOnboardingLinkConfiguration(host)));
             log.info(onboardingLink.toString());
 
         } catch (Exception e) {
@@ -110,13 +111,13 @@ public class LegalEntityManagementAPIService {
      * retrieve the desired customisation for the Hosted Onboarding app
      * @return
      */
-    private OnboardingLinkInfo getOnboardingLinkConfiguration() {
+    private OnboardingLinkInfo getOnboardingLinkConfiguration(String host) {
         OnboardingLinkInfo onboardingLinkInfo = new OnboardingLinkInfo();
 
         // control the page language
         onboardingLinkInfo.setLocale("en-US");
         // link to bring users back to the platform
-        onboardingLinkInfo.setRedirectUrl("http://localhost:3000/dashboard");
+        onboardingLinkInfo.setRedirectUrl(host + "/dashboard");
         // custom theme applied to the Hosted Onboarding app. Must be already created in the Customer Area
         onboardingLinkInfo.setThemeId(getApplicationProperty().getHostedOnboardingThemeId());
         // additional settings
