@@ -87,7 +87,7 @@ public class LegalEntityManagementAPIService {
     /**
      * Generate the Hosted Onboarding link for the Legal entity
      * @param legalEntityId
-     * @param host
+     * @param host Host where the application is running
      * @return
      */
     public Optional<OnboardingLink> getOnboardingLink(String legalEntityId, String host) {
@@ -109,6 +109,7 @@ public class LegalEntityManagementAPIService {
 
     /**
      * retrieve the desired customisation for the Hosted Onboarding app
+     * @param host Host where the application is running
      * @return
      */
     private OnboardingLinkInfo getOnboardingLinkConfiguration(String host) {
