@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer'
 import Container from '@mui/material/Container';
+import Chip from '@mui/material/Chip';
 
 import Link from '@mui/material/Link';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,22 +26,39 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 
-const drawerWidth = 240;
+import DashboardHeader from "./DashboardHeader.js";
+import DashboardDrawer from "./DashboardDrawer.js";
 
-export default function DashboardHeader() {
+export default function Settings() {
+
+    const { accountHolderId } = useParams();
+
   return (
-      <AppBar
-        position="fixed"
-        sx={{ background: "white", width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
-        <Toolbar>
-            <Typography variant="h4" component="div" sx={{ flexGrow: 1, fontWeight: "bold",  }} color="textSecondary">
-                Dashboard
-            </Typography>
+    <Box sx={{ display: 'flex' }}>
 
-        </Toolbar>
-      </AppBar>
+      <DashboardHeader/>
+
+      <DashboardDrawer/>
+
+        <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              width="100%"
+              sx={{ p: 3 }}
+        >
+
+        <Toolbar />
+
+        <Divider>
+            <Chip label="Settings" sx={{ fontSize: "20px" }}/>
+        </Divider>
+        <br/><br/>
+
+
+      </Box>
+    </Box>
   );
 }

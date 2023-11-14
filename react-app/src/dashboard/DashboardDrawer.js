@@ -95,7 +95,7 @@ export default function DashboardDrawer() {
         </List>
         <Divider />
         <List>
-            <ListItem key="settings" disablePadding>
+            <ListItem disablePadding button component={RouterLink} to={"/settings/"}>
               <ListItemButton>
                 <ListItemIcon>
                   <SettingsApplicationsIcon />

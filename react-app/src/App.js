@@ -7,6 +7,7 @@ import Dashboard from './dashboard/Dashboard.js';
 import Products from './dashboard/Products.js';
 import Payments from './dashboard/Payments.js';
 import Payouts from './dashboard/Payouts.js';
+import Settings from './dashboard/Settings.js';
 import Login from './signup/Login.js';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/products" element={<Products />} />
           <Route exact path="/payments" element={<Payments />} />
           <Route exact path="/payouts" element={<Payouts />} />
+          <Route exact path="/settings" element={<Settings />} />
          </Routes>
     </Router>
   );
