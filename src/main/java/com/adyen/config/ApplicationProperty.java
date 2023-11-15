@@ -6,16 +6,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationProperty {
 
-    @Value("${LEM_API_KEY}")
+    @Value("${ADYEN_LEM_API_KEY}")
     private String lemApiKey;
 
-    @Value("${BCL_API_KEY}")
+    @Value("${ADYEN_BCL_API_KEY}")
     private String bclApiKey;
 
     @Value("${ADYEN_HMAC_KEY}")
     private String hmacKey;
 
-    @Value("${HOSTED_ONBOARDING_THEME_ID}")
+    @Value("${ADYEN_HOSTED_ONBOARDING_THEME_ID}")
     private String hostedOnboardingThemeId;
 
     public String getLemApiKey() {
