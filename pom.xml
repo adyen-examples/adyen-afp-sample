@@ -132,6 +132,8 @@
             <phase>generate-resources</phase>
             <configuration>
               <arguments>run build</arguments>
+              <workingDirectory>react-app</workingDirectory>
+              <installDirectory>react-app</installDirectory>
             </configuration>
           </execution>
         </executions>
