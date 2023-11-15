@@ -2,8 +2,7 @@
 
 tasks:
   - name: Run AfP Sample App
-    before: sdk install java 17.0.4.1-tem
-    init: ./mvnw clean package
+    before: sdk install java 17.0.4.1-tem < /dev/null
     command: ./mvnw spring-boot:run
 
 ports:
