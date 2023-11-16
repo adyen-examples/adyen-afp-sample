@@ -63,10 +63,9 @@ mvn spring-boot:run
 Access [http://localhost:3000/](http://localhost:3000/)
 
 #### Build the application
-Build the SpringBoot jar that contains the entire application and run it:
+Run the Spring Boot application, packaging the frontend and all assets together:
 ```   
-mvn package
-java -jar target/adyen-afp-sample.jar
+mvn spring-boot:run -Dskip.frontend.build=false
 ```
 
 Access [http://localhost:8080/](http://localhost:8080/)
