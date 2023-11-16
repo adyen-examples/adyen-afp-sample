@@ -13,9 +13,9 @@ tasks:
     before: |
       cd ./react-app
     init: |
-      echo npm install
-      echo npm start
+      npm install
     command: |
+      npm start
       echo Frontend running
 
 ports:
