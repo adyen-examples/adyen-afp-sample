@@ -119,7 +119,8 @@ public class LegalEntityManagementAPIService {
         onboardingLinkInfo.setLocale("en-US");
         // link to bring users back to the platform
         onboardingLinkInfo.setRedirectUrl(host + "/dashboard");
-        // custom theme applied to the Hosted Onboarding app. Must be already created in the Customer Area
+        // custom theme applied to the Hosted Onboarding app (must be created in the Customer Area)
+        // when undefined the default theme will be used
         onboardingLinkInfo.setThemeId(getApplicationProperty().getHostedOnboardingThemeId());
         // additional settings
         onboardingLinkInfo.setSettings(
