@@ -16,11 +16,14 @@ tasks:
       echo Frontend running
 
 ports:
-  - name: AfP Sample App
-    description: Frontend
+  - name: AfP Sample App frontend
     port: 3000
     visibility: public
     onOpen: open-preview
+
+  - name: AfP Sample App backend
+    port: 8080
+    visibility: private
 
 vscode:
   extensions:
