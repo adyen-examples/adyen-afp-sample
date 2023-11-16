@@ -1,13 +1,12 @@
 
 
 tasks:
-#  - name: backend
-#    before: |
-#      sdk install java 17.0.4.1-tem < /dev/null
-#    init: |
-#      ./mvnw spring-boot:run
-#    command: |
-#      echo Backend running
+  - name: backend
+    before: |
+      sdk install java 17.0.4.1-tem < /dev/null
+    command: |
+      ./mvnw spring-boot:run
+      echo Backend running
 
   - name: frontend
     before: |
@@ -23,7 +22,7 @@ ports:
     description: Frontend
     port: 3000
     visibility: public
-    onOpen: open-browser
+    onOpen: open-preview
 
 vscode:
   extensions:
