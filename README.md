@@ -48,7 +48,9 @@ HOSTED_ONBOARDING_THEME_ID=yourHostedOnboardingThemeId
 ```
 
 ## 3. Run the application
-
+You can run the sample application in 2 ways:
+* run React and Java separately
+* build and run the application JAR file
 #### Run React and Java
 Run separately frontend and backend:
 ```shell
