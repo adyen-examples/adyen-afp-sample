@@ -1,12 +1,15 @@
 # Adyen for Platforms (AfP) Sample Application
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-afp-sample)  
+[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
+
 ## Intro
 
 Adyen for Platforms is an end-to-end payment solution for peer-to-peer marketplaces, on-demand services, crowdfunding platforms, and any other platform business models.
 
 This application is a simplified version of a platform that utilises AfP, showcasing the following use cases:
-* signup and start Hosted Onboarding
-* login and resume Hosted Onboarding
+* Signup and start Hosted Onboarding
+* Login and resume Hosted Onboarding
 
 The frontend is implemented in React, the backend is in Java (Spring Boot) integrating the Adyen Java library 
 ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Documentation](https://docs.adyen.com/development-resources/libraries?tab=java_2)).
