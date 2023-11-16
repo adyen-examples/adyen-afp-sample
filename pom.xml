@@ -18,12 +18,15 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
 
     <frontend-maven-plugin.version>1.14.2</frontend-maven-plugin.version>
     <node.version>v18.17.1</node.version>
     <yarn.version>v1.22.4</yarn.version>
+
+    <skip.frontend.build>true</skip.frontend.build>
 
   </properties>
 
@@ -77,67 +80,73 @@
         <version>3.0.5</version>
       </plugin>
 
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-resources-plugin</artifactId>-->
-<!--        <version>3.3.1</version>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>copy-resources</id>-->
-<!--            <phase>process-classes</phase>-->
-<!--            <goals>-->
-<!--              <goal>copy-resources</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <outputDirectory>${basedir}/target/classes/static</outputDirectory>-->
-<!--              <resources>-->
-<!--                <resource>-->
-<!--                  <directory>react-app/build</directory>-->
-<!--                </resource>-->
-<!--              </resources>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+          <!-- whether to skip frontend build or not -->
+          <skip>${skip.frontend.build}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/static</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>react-app/build</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-<!--      <plugin>-->
-<!--        <groupId>com.github.eirslett</groupId>-->
-<!--        <artifactId>frontend-maven-plugin</artifactId>-->
-<!--        <version>${frontend-maven-plugin.version}</version>-->
-<!--        <configuration>-->
-<!--          <workingDirectory>react-app</workingDirectory>-->
-<!--        </configuration>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>install node</id>-->
-<!--            <goals>-->
-<!--              <goal>install-node-and-npm</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <nodeVersion>${node.version}</nodeVersion>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--          <execution>-->
-<!--            <id>npm install</id>-->
-<!--            <goals>-->
-<!--              <goal>npm</goal>-->
-<!--            </goals>-->
-<!--            <phase>generate-resources</phase>-->
-<!--          </execution>-->
-<!--          <execution>-->
-<!--            <id>npm build</id>-->
-<!--            <goals>-->
-<!--              <goal>npm</goal>-->
-<!--            </goals>-->
-<!--            <phase>generate-resources</phase>-->
-<!--            <configuration>-->
-<!--              <arguments>run build</arguments>-->
-<!--              <workingDirectory>react-app</workingDirectory>-->
-<!--              <installDirectory>react-app</installDirectory>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin.version}</version>
+        <configuration>
+          <workingDirectory>react-app</workingDirectory>
+          <!-- whether to skip frontend build or not -->
+          <skip>${skip.frontend.build}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install node</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>${node.version}</nodeVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+          <execution>
+            <id>npm build</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run build</arguments>
+              <workingDirectory>react-app</workingDirectory>
+              <installDirectory>react-app</installDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
     </plugins>
   </build>
