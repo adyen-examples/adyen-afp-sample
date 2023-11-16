@@ -1,13 +1,13 @@
 
 
 tasks:
-  - name: backend
-    before: |
-      sdk install java 17.0.4.1-tem < /dev/null
-    init: |
-      ./mvnw spring-boot:run
-    command: |
-      echo Backend running
+#  - name: backend
+#    before: |
+#      sdk install java 17.0.4.1-tem < /dev/null
+#    init: |
+#      ./mvnw spring-boot:run
+#    command: |
+#      echo Backend running
 
   - name: frontend
     before: |
@@ -17,10 +17,13 @@ tasks:
       echo npm start
     command: |
       echo Frontend running
-      
+
 ports:
-  - port: 3000
-    onOpen: open-preview
+  - name: AfP Sample App
+    description: Frontend
+    port: 3000
+    visibility: public
+    onOpen: open-browser
 
 vscode:
   extensions:
