@@ -1,12 +1,25 @@
 
 
 tasks:
-  - name: Run AfP Sample App
-    before: sdk install java 17.0.4.1-tem < /dev/null
-    command: ./mvnw spring-boot:run
+  - name: backend
+    before: |
+      sdk install java 17.0.4.1-tem < /dev/null
+    init: |
+      ./mvnw spring-boot:run
+    command: |
+      echo Backend running
 
+  - name: frontend
+    before: |
+      cd ./react-app
+    init: |
+      echo npm install
+      echo npm start
+    command: |
+      echo Frontend running
+      
 ports:
-  - port: 8080
+  - port: 3000
     onOpen: open-preview
 
 vscode:
