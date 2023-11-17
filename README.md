@@ -29,14 +29,12 @@ git clone https://github.com/adyen-examples/adyen-afp-sample.git
 * [BCL API key](https://docs.adyen.com/marketplaces-and-platforms/get-started/): API key for accessing Balance Platform [Configuration API](https://docs.adyen.com/api-explorer/balanceplatform/latest/overview)
 * [LEM API key](https://docs.adyen.com/marketplaces-and-platforms/get-started/): API key for accessing [Legal Entity Management API](https://docs.adyen.com/api-explorer/legalentity/latest/overview)
 * [HMAC key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures): HMAC key to validate incoming webhook requests
-* [Hosted Onboarding Theme id](https://docs.adyen.com/marketplaces-and-platforms/collect-verification-details/hosted/customize-hosted-onboarding/): id of the Hosted Onboarding Theme created in the Customer Area
 
 On Linux/Mac/Windows export/set the environment variables.
 ```shell
 export BCL_API_KEY=yourBclApiKey
 export LEM_API_KEY=yourLemApiKey
 export ADYEN_HMAC_KEY=yourHmacKey
-export HOSTED_ONBOARDING_THEME_ID=yourHostedOnboardingThemeId
 ```
 
 Alternatively, define the variables in the `config/application.properties`.
@@ -44,7 +42,6 @@ Alternatively, define the variables in the `config/application.properties`.
 BCL_API_KEY=yourBclApiKey
 LEM_API_KEY=yourLemApiKey
 ADYEN_HMAC_KEY=yourHmacKey
-HOSTED_ONBOARDING_THEME_ID=yourHostedOnboardingThemeId
 ```
 
 ## 3. Run the application
