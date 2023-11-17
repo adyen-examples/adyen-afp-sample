@@ -32,6 +32,21 @@ public class LegalEntityManagementAPIService {
     @Autowired
     private ApplicationProperty applicationProperty;
 
+    public LegalEntity get(String id) {
+        LegalEntity legalEntity = null;
+
+        try {
+
+            legalEntity = getLegalEntitiesApi().getLegalEntity(id);
+
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot get LegalEntity: " + e.getMessage());
+        }
+
+        return legalEntity;
+    }
+
     public LegalEntity create(IndividualSignup individualSignup) {
 
         LegalEntity legalEntity = null;

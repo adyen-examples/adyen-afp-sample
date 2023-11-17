@@ -13,6 +13,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
+
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
@@ -87,6 +88,45 @@ export default function Dashboard() {
             <Chip label="Status" sx={{ fontSize: "20px" }}/>
         </Divider>
         <br/>
+
+        <Box style={{ width: '60%', height: '50%'}} textAlign="left" >
+            <Grid container padding={1} >
+                <Grid item xs={2} >
+                    <Typography variant="body" style={{ fontWeight: "bold" }} color="textSecondary">
+                    Type:
+                    </Typography>
+                </Grid>
+                <Grid item xs={10}>
+                    <Typography variant="body" color="textSecondary">
+                    {data.type}
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2} padding={1}>
+                <Grid item xs={2} >
+                    <Typography variant="body" style={{ fontWeight: "bold" }} color="textSecondary">
+                    Name:
+                    </Typography>
+                </Grid>
+                <Grid item xs={10}>
+                    <Typography variant="body" color="textSecondary">
+                    {data.name}
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2} padding={1}>
+                <Grid item xs={2} >
+                    <Typography variant="body" style={{ fontWeight: "bold" }} color="textSecondary">
+                    City:
+                    </Typography>
+                </Grid>
+                <Grid item xs={10}>
+                    <Typography variant="body" color="textSecondary">
+                    {data.location}
+                    </Typography>
+                </Grid>
+            </Grid>
+        </Box>
 
         {/*
         Display relevant message based on AccountHolderStatus value

@@ -2,9 +2,11 @@ package com.adyen.controller;
 
 import com.adyen.model.User;
 import com.adyen.model.balanceplatform.AccountHolder;
+import com.adyen.model.legalentitymanagement.LegalEntity;
 import com.adyen.model.legalentitymanagement.OnboardingLink;
 import com.adyen.service.ConfigurationAPIService;
 import com.adyen.service.LegalEntityManagementAPIService;
+import com.adyen.util.LegalEntityHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,8 @@ public class DashboardController extends BaseController {
     private ConfigurationAPIService configurationAPIService;
     @Autowired
     private LegalEntityManagementAPIService legalEntityManagementAPIService;
+    @Autowired
+    private LegalEntityHandler legalEntityHandler;
 
     /**
      * Get User who has logged in (user id found in Session)
@@ -39,10 +43,14 @@ public class DashboardController extends BaseController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
+        // retrieve Account Holder
         Optional<AccountHolder> accountHolder = getConfigurationAPIService().getAccountHolder(getUserIdOnSession());
 
         return accountHolder.map(response -> {
-                    User user = new User();
+                    // get Legal Entity
+                    LegalEntity legalEntity = getLegalEntityManagementAPIService().get(accountHolder.get().getLegalEntityId());
+
+                    User user = getLegalEntityHandler().getUserFromLegalEntity(legalEntity);
                     user.setStatus(getConfigurationAPIService().getAccountHolderStatus(accountHolder.get()));
                     return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
                 })
@@ -98,5 +106,13 @@ public class DashboardController extends BaseController {
 
     public void setLegalEntityManagementAPIService(LegalEntityManagementAPIService legalEntityManagementAPIService) {
         this.legalEntityManagementAPIService = legalEntityManagementAPIService;
+    }
+
+    public LegalEntityHandler getLegalEntityHandler() {
+        return legalEntityHandler;
+    }
+
+    public void setLegalEntityHandler(LegalEntityHandler legalEntityHandler) {
+        this.legalEntityHandler = legalEntityHandler;
     }
 }
