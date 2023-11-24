@@ -34,7 +34,7 @@ export default function LoginInfo() {
           horizontal: 'left',
         }}
       >
-        <Typography sx={{ p: 1 }}>Username: enter an existing Account Holder id (ie AH3227C223222H5HX4GJQ3CDW)</Typography>
+        <Typography sx={{ p: 1 }}>Username: enter an existing Account Holder id (ie AH1234567890)</Typography>
         <Typography sx={{ p: 1 }}>Password: any</Typography>
       </Popover>
     </div>
