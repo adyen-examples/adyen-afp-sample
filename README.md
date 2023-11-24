@@ -14,6 +14,8 @@ This application is a simplified version of a platform that utilises AfP, showca
 The frontend is implemented in React, the backend is in Java (Spring Boot) integrating the Adyen Java library 
 ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Documentation](https://docs.adyen.com/development-resources/libraries?tab=java_2)).
 
+![AfP sample app](afp-sample.gif)
+
 ## Prerequisites
 
 - Java 17
