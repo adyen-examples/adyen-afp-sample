@@ -117,7 +117,7 @@ export default function Dashboard() {
             <Grid container spacing={2} padding={1}>
                 <Grid item xs={2} >
                     <Typography variant="body" style={{ fontWeight: "bold" }} color="textSecondary">
-                    City:
+                    Country:
                     </Typography>
                 </Grid>
                 <Grid item xs={10}>

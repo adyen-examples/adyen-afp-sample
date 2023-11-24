@@ -3,7 +3,6 @@ package com.adyen.util;
 import com.adyen.model.User;
 import com.adyen.model.legalentitymanagement.Individual;
 import com.adyen.model.legalentitymanagement.LegalEntity;
-import com.adyen.model.legalentitymanagement.OnboardingLink;
 import com.adyen.model.legalentitymanagement.Organization;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class LegalEntityHandler {
     }
 
     private String getLocation(Organization organization) {
-        return organization.getRegisteredAddress().getCity() + " (" + organization.getRegisteredAddress().getCountry() + ")";
+        return organization.getRegisteredAddress().getCountry();
     }
 
 }
