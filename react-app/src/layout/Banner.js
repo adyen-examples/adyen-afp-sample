@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 const Banner = () => {
   return (
         <Box >
-            <img src="/banner.png" alt="Banner" style={{ width: '100%', height: '90%' }} />
+            <img src="/my-platform-home-with-logo.jpeg" alt="Banner" style={{ width: '100%', height: '90%' }} />
         </Box>
   );
 }

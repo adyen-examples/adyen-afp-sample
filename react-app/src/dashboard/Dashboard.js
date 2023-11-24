@@ -145,7 +145,7 @@ const VerificationSuccess = ({ handleClick }) => {
 
         <Box style={{ width: '70%', height: '50%'}} textAlign="center" >
             <div>
-                <img src="/verification-success.png" alt="Verification successful" style={{ width: '30%', height: '30%' }} />
+                <img src="/status-valid-image.svg" alt="Verification successful" style={{ width: '30%', height: '30%' }} />
             </div>
             <Typography variant="body" style={{ fontWeight: "bold" }} color="textSecondary">
                 The verification has been successfully completed. You can start accepting orders!
@@ -168,7 +168,7 @@ const VerificationPending = ({ handleClick }) => {
 
         <Box style={{ width: '70%', height: '50%'}} textAlign="center" >
             <div>
-                <img src="/verification-pending.png" alt="Verification pending" style={{ width: '30%', height: '30%' }} />
+                <img src="/status-pending-image.svg" alt="Verification pending" style={{ width: '30%', height: '30%' }} />
             </div>
             <Typography variant="body" style={{ fontWeight: "bold" }} color="textSecondary">
                 We are reviewing the details you provided and we will send you a notification as soon as the
@@ -194,7 +194,7 @@ const VerificationInvalid = ({ handleClick }) => {
 
         <Box style={{ width: '70%', height: '50%'}} textAlign="center" >
             <div>
-                <img src="/verification-invalid.png" alt="Verification invalid" style={{ width: '30%', height: '30%' }} />
+                <img src="/status-invalid-image.svg" alt="Verification invalid" style={{ width: '30%', height: '30%' }} />
             </div>
             <Typography variant="body" style={{ fontWeight: "bold" }} color="textSecondary">
                 The verification unfortunately is not successful.
