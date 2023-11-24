@@ -29,32 +29,32 @@ export default function ProductList() {
 const itemData = [
   {
     img: '/products/coffee.jpg',
-    title: 'Special Tacos',
-    price: '10.99',
+    title: 'Cappuccino',
+    price: '3.99',
   },
   {
     img: '/products/hamburger.jpg',
-    title: 'Veggie Tacos',
+    title: 'Hamburger XL',
     price: '11.99',
   },
   {
     img: '/products/nachos.jpg',
     title: 'Nachos Large',
-    price: '20.99',
+    price: '16.99',
   },
   {
     img: '/products/orange-juice.jpg',
-    title: 'Vegan burger',
-    price: '8.99',
+    title: 'Orange Juice',
+    price: '4.99',
   },
   {
     img: '/products/special-tacos.jpg',
-    title: 'Orange Juice',
-    price: '5.99',
+    title: 'Our special Tacos',
+    price: '11.99',
   },
   {
     img: '/products/veggie-tacos.jpg',
-    title: 'Coffee',
-    price: '3.99',
+    title: 'Our veggie Tacos',
+    price: '11.99',
   },
 ];
