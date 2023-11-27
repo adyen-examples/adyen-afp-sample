@@ -5,6 +5,6 @@ updates:
     schedule:
       interval: "daily"
  - package-ecosystem: "npm" 
-    directory: "/react-app" 
-    schedule:
+   directory: "/react-app" 
+   schedule:
       interval: "daily"
