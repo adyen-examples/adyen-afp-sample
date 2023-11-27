@@ -1,8 +1,8 @@
 version: 2
 updates:
-  - package-ecosystem: "maven" 
-    directory: "/" 
-    schedule:
+ - package-ecosystem: "maven" 
+   directory: "/" 
+   schedule:
       interval: "daily"
  - package-ecosystem: "npm" 
    directory: "/react-app" 
