@@ -1,0 +1,55 @@
+name: E2E
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+      - README.md
+      - .gitignore
+      - .gitpod.yml
+      - LICENSE
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+      - README.md
+      - .gitignore
+      - .gitpod.yml
+      - LICENSE
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    name: E2E run
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install Node dependencies
+        run: npm install
+        working-directory: react-app
+
+      - name: Run frontend
+        run: npm run
+        working-directory: react-app
+
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+      - name: Run backend
+        run: nohup mvn spring-boot:run &
+        env:
+          ADYEN_LEM_API_KEY: ${{ secrets.ADYEN_LEM_API_KEY }}
+          ADYEN_BCL_API_KEY: ${{ secrets.ADYEN_LEM_API_KEY }}
+
+      - name: Run testing suite
+        run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=afp -e URL=http://localhost:3000 -e AFP_USERNAME=${{ secrets.AFP_USERNAME }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
