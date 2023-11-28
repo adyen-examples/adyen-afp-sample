@@ -2,7 +2,14 @@ target
 .idea
 *.iml
 .DS_Store
-node_modules
+
+.env
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
 *.bat
 
 react-app/build
