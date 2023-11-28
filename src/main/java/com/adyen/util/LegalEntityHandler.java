@@ -38,7 +38,7 @@ public class LegalEntityHandler {
     }
 
     private String getLocation(Individual individual) {
-        return individual.getResidentialAddress().getCity() + " (" + individual.getResidentialAddress().getCountry() + ")";
+        return individual.getResidentialAddress().getCountry();
     }
 
     private String getLocation(Organization organization) {
