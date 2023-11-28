@@ -36,7 +36,7 @@ jobs:
         working-directory: react-app
 
       - name: Run frontend
-        run: npm start
+        run: nohup npm start &
         working-directory: react-app
 
       - name: Setup java
