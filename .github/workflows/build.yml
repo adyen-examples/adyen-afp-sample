@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: Build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
