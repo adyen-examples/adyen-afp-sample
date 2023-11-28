@@ -1,15 +1,14 @@
 import * as React from 'react';
+
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-//import { Link } from 'react-router-dom';
 
 import Footer from "../layout/Footer.js";
 import Banner from "../layout/Banner.js";
