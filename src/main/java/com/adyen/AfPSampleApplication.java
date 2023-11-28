@@ -32,10 +32,6 @@ public class AfPSampleApplication {
             throw new RuntimeException("BCL API key is undefined");
         }
 
-        if(getApplicationProperty().getHmacKey().isEmpty()) {
-            throw new RuntimeException("HMAC key is undefined");
-        }
-
     }
 
     public ApplicationProperty getApplicationProperty() {
