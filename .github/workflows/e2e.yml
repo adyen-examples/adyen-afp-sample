@@ -49,7 +49,7 @@ jobs:
         run: nohup mvn spring-boot:run &
         env:
           ADYEN_LEM_API_KEY: ${{ secrets.ADYEN_LEM_API_KEY }}
-          ADYEN_BCL_API_KEY: ${{ secrets.ADYEN_LEM_API_KEY }}
+          ADYEN_BCL_API_KEY: ${{ secrets.ADYEN_BCL_API_KEY }}
 
       - name: Run testing suite
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=afp -e URL=http://localhost:3000 -e AFP_USERNAME=${{ secrets.AFP_USERNAME }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
