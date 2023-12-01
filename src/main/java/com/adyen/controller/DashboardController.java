@@ -1,5 +1,6 @@
 package com.adyen.controller;
 
+import com.adyen.model.OnboardingLinkProperties;
 import com.adyen.model.User;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.legalentitymanagement.LegalEntity;
@@ -7,7 +8,6 @@ import com.adyen.model.legalentitymanagement.OnboardingLink;
 import com.adyen.service.ConfigurationAPIService;
 import com.adyen.service.LegalEntityManagementAPIService;
 import com.adyen.util.LegalEntityHandler;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class DashboardController extends BaseController {
     }
 
     @PostMapping("/getOnboardingLink")
-    ResponseEntity<String> getOnboardingLink(HttpServletRequest request) {
+    ResponseEntity<String> getOnboardingLink(@RequestBody OnboardingLinkProperties onboardingLinkProperties) {
 
         String legalEntityId;
 
@@ -72,7 +72,7 @@ public class DashboardController extends BaseController {
         }
 
         // get host (used to generate the returnUrl)
-        String host = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String host = onboardingLinkProperties.getHost();
 
         Optional<AccountHolder> accountHolder = getConfigurationAPIService().getAccountHolder(getUserIdOnSession());
 
