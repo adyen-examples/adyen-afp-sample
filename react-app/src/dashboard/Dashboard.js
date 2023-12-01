@@ -34,7 +34,9 @@ export default function Dashboard() {
     }, []);
 
     const generateOnboardingLink = () => {
-        axios.post('/api/dashboard/getOnboardingLink')
+        axios.post('/api/dashboard/getOnboardingLink', {
+            host: window.location.origin
+          })
           .then((response) => {
             window.location.href = response.data;
           })
