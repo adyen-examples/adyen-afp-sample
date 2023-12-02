@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.adyen</groupId>
       <artifactId>adyen-java-api-library</artifactId>
-      <version>22.0.0-beta</version>
+      <version>22.1.0</version>
     </dependency>
 
     <dependency>
