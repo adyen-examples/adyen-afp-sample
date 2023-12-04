@@ -1,6 +1,7 @@
 package com.adyen.controller;
 
 import com.adyen.model.OnboardingLinkProperties;
+import com.adyen.model.TransactionItem;
 import com.adyen.model.User;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.legalentitymanagement.LegalEntity;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -90,6 +93,18 @@ public class DashboardController extends BaseController {
                             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                         }
                 );
+    }
+
+    @PostMapping("/getTransactions")
+    ResponseEntity<List<TransactionItem>> getTransactions() {
+
+        if (getUserIdOnSession() == null) {
+            log.warn("User is not logged in");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(
+                getConfigurationAPIService().getTransactions(getUserIdOnSession()), HttpStatus.ACCEPTED);
     }
 
     public ConfigurationAPIService getConfigurationAPIService() {
