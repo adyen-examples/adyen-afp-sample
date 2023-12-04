@@ -70,7 +70,7 @@ export default function DashboardDrawer() {
                 <ListItemIcon>
                   <PaymentsIcon />
                 </ListItemIcon>
-                <ListItemText primary="Payments" />
+                <ListItemText primary="Transactions" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding button component={RouterLink} to={"/payouts/"}>
