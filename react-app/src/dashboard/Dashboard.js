@@ -63,8 +63,9 @@ export default function Dashboard() {
         <Toolbar />
 
         <Divider>
-            <Chip label="Status" sx={{ fontSize: "20px" }}/>
+            <Chip label="Status" variant="elevated" sx={{ fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
         </Divider>
+
         <br/>
 
         <Box style={{ width: '60%', height: '50%'}} textAlign="left" >

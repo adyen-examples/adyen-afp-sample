@@ -29,8 +29,9 @@ export default function Products() {
         <Toolbar />
 
         <Divider>
-            <Chip label="My Products" sx={{ fontSize: "20px" }}/>
+            <Chip label="My Products" variant="elevated" sx={{ fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
         </Divider>
+
         <ProductList/>
       </Box>
     </Box>
