@@ -75,58 +75,58 @@ export default function Products() {
         </Divider>
         <br/><br/>
         <div>
-
-<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 500, minHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                  sx={{ fontSize: "18px", fontWeight: "bold"  }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}
-                        sx={{ fontSize: "15px" }}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-
+            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                <TableContainer sx={{ maxHeight: 500, minHeight: 500 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableCell
+                                      key={column.id}
+                                      align={column.align}
+                                      style={{ minWidth: column.minWidth }}
+                                      sx={{ fontSize: "18px", fontWeight: "bold"  }}
+                                    >
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row) => {
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                        {columns.map((column) => {
+                                        const value = row[column.id];
+                                        return (
+                                            <TableCell key={column.id} align={column.align}
+                                                sx={{ fontSize: "15px",
+                                                        color: value === 'Outgoing' ? '#1573C1' : value === 'Incoming' ? '#0A912E' : 'black',
+                                                        fontWeight: value === 'Outgoing' ? 'bold' : value === 'Incoming' ? 'bold' : 'normal'
+                                                    }}
+                                            >
+                                                {column.format && typeof value === 'number'? column.format(value) : value}
+                                            </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                );
+                                })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[10, 25]}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Paper>
         </div>
 
       </Box>
@@ -135,10 +135,9 @@ export default function Products() {
 }
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 100 },
-  { id: 'status', label: 'Status', minWidth: 120 },
-  { id: 'type', label: 'Type', minWidth: 120 },
-  { id: 'created', label: 'Created', minWidth: 220 },
-  { id: 'amount', label: 'Amount', minWidth: 150 },
-  { id: 'pspReference', label: 'PSP Reference', minWidth: 200 },
+    { id: 'id', label: 'ID', minWidth: 100 },
+    { id: 'status', label: 'Status', minWidth: 120 },
+    { id: 'type', label: 'Type', minWidth: 120 },
+    { id: 'created', label: 'Created', minWidth: 220 },
+    { id: 'amount', label: 'Amount', minWidth: 150 },
 ];
