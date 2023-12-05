@@ -6,7 +6,6 @@ public class TransactionItem {
     private String type;
     private String created;
     private String amount;
-    private String pspReference;
 
     public String getId() {
         return id;
@@ -40,14 +39,6 @@ public class TransactionItem {
         this.amount = amount;
     }
 
-    public String getPspReference() {
-        return pspReference;
-    }
-
-    public void setPspReference(String pspReference) {
-        this.pspReference = pspReference;
-    }
-
     public String getType() {
         return type;
     }
@@ -73,11 +64,6 @@ public class TransactionItem {
 
     public TransactionItem amount(String amount) {
         this.amount = amount;
-        return this;
-    }
-
-    public TransactionItem pspReference(String pspReference) {
-        this.pspReference = pspReference;
         return this;
     }
 
