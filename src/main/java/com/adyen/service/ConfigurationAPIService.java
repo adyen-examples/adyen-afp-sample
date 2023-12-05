@@ -152,8 +152,6 @@ public class ConfigurationAPIService {
                     null, null, accountHolderId, null,
                 null, createdSince, createdUntil, limit, null);
 
-            log.info(transactionSearchResponse.getData().toString());
-
             transactionItems = getTransactionHandler().getTransactionItems(transactionSearchResponse.getData());
         } catch (Exception e) {
             log.error(e.toString(), e);
