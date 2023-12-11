@@ -70,13 +70,11 @@ export default function Products() {
 
         <Toolbar />
 
-        <Divider>
-            <Chip label="My Transactions" variant="elevated" sx={{ fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
+        <Divider sx={{ padding: 1 }}>
+            <Chip label="My Transactions" variant="elevated" sx={{ minWidth: 100, fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
         </Divider>
-        <br/><br/>
-        <div>
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: 500, minHeight: 500 }}>
+            <Paper sx={{ width: '100%' }}>
+                <TableContainer>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
@@ -127,7 +125,7 @@ export default function Products() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-        </div>
+
 
       </Box>
     </Box>
