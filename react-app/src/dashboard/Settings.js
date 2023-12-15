@@ -27,8 +27,8 @@ export default function Settings() {
 
         <Toolbar />
 
-        <Divider>
-            <Chip label="Settings" sx={{ fontSize: "20px" }}/>
+        <Divider sx={{ padding: 1 }}>
+            <Chip label="Settings" variant="elevated" sx={{ minWidth: 100, fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
         </Divider>
         <br/><br/>
 

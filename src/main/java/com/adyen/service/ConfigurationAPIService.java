@@ -4,14 +4,22 @@ import com.adyen.Client;
 import com.adyen.config.ApplicationProperty;
 import com.adyen.enums.Environment;
 import com.adyen.model.AccountHolderStatus;
+import com.adyen.model.TransactionItem;
 import com.adyen.model.balanceplatform.*;
+import com.adyen.model.transfers.Transaction;
+import com.adyen.model.transfers.TransactionSearchResponse;
 import com.adyen.service.balanceplatform.AccountHoldersApi;
 import com.adyen.service.balanceplatform.BalanceAccountsApi;
+import com.adyen.service.transfers.TransactionsApi;
+import com.adyen.util.TransactionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +39,9 @@ public class ConfigurationAPIService {
 
     @Autowired
     private ApplicationProperty applicationProperty;
+
+    @Autowired
+    private TransactionHandler transactionHandler;
 
     public Optional<AccountHolder> getAccountHolder(String accountHolderId) {
 
@@ -119,6 +130,38 @@ public class ConfigurationAPIService {
         return balanceAccount;
     }
 
+    /**
+     * Get all transactions for the user (accountHolder)
+     * @param accountHolderId
+     * @return
+     */
+    public List<TransactionItem> getTransactions(String accountHolderId) {
+
+        List<TransactionItem> transactionItems = null;
+
+        try {
+
+            // in the last X days
+            OffsetDateTime createdSince = OffsetDateTime.now().minus(365, ChronoUnit.DAYS);
+            // until today
+            OffsetDateTime createdUntil = OffsetDateTime.now();
+            // max number of transactions to fetch
+            Integer limit = 100;
+
+            TransactionSearchResponse transactionSearchResponse = getTransactionsApi().getAllTransactions(
+                    null, null, accountHolderId, null,
+                null, createdSince, createdUntil, limit, null);
+
+            transactionItems = getTransactionHandler().getTransactionItems(transactionSearchResponse.getData());
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot create BalanceAccount: " + e.getMessage());
+        }
+
+        return transactionItems;
+
+    }
+
     // AccountHoldersApi handler
     private AccountHoldersApi getAccountHoldersApi() {
         return new AccountHoldersApi(getApiClient());
@@ -128,6 +171,11 @@ public class ConfigurationAPIService {
     private BalanceAccountsApi getBalanceAccountsApi() {
         return new BalanceAccountsApi(getApiClient());
     }
+
+    private TransactionsApi getTransactionsApi() {
+        return new TransactionsApi(getApiClient());
+    }
+
 
     // create client to access the Configuration API
     private Client getApiClient() {
@@ -149,4 +197,11 @@ public class ConfigurationAPIService {
         this.applicationProperty = applicationProperty;
     }
 
+    public TransactionHandler getTransactionHandler() {
+        return transactionHandler;
+    }
+
+    public void setTransactionHandler(TransactionHandler transactionHandler) {
+        this.transactionHandler = transactionHandler;
+    }
 }
