@@ -10,6 +10,7 @@ Adyen for Platforms is an end-to-end payment solution for peer-to-peer marketpla
 This application is a simplified version of a platform that utilises AfP, showcasing the following use cases:
 * Signup and start Hosted Onboarding
 * Login and resume Hosted Onboarding
+* View transactions
 
 The frontend is implemented in React, the backend is in Java (Spring Boot) integrating the Adyen Java library 
 ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Documentation](https://docs.adyen.com/development-resources/libraries?tab=java_2)).
