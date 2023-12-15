@@ -65,7 +65,7 @@ export default function DashboardDrawer() {
                 <ListItemText primary="Products" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding button component={RouterLink} to={"/payments/"}>
+            <ListItem disablePadding button component={RouterLink} to={"/transactions/"}>
               <ListItemButton>
                 <ListItemIcon>
                   <PaymentsIcon />
