@@ -6,7 +6,7 @@ import com.adyen.model.configurationwebhooks.AccountHolderNotificationRequest;
 import com.adyen.model.configurationwebhooks.BalanceAccountNotificationRequest;
 import com.adyen.model.configurationwebhooks.PaymentNotificationRequest;
 import com.adyen.notification.BankingWebhookHandler;
-import com.adyen.util.EventHandler;
+import com.adyen.util.AfpEventHandler;
 import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,11 +56,11 @@ public class WebhookController {
 //        }
 
         // Deserialise json payload
-        EventHandler eventHandler = new EventHandler();
+        AfpEventHandler afpEventHandler = new AfpEventHandler();
         BankingWebhookHandler webhookHandler = new BankingWebhookHandler(json);
 
-        String type = eventHandler.getEventType(json);
-        String environment = eventHandler.getEventEnvironment(json);
+        String type = afpEventHandler.getEventType(json);
+        String environment = afpEventHandler.getEventEnvironment(json);
 
         log.info("Event " + type + " on " + environment);
 
