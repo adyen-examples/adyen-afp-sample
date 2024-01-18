@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * Helper class to process AfP events
  */
 @Service
-public class EventHandler {
+public class AfpEventHandler {
 
     public String getEventType(String json) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

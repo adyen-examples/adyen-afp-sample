@@ -3,7 +3,7 @@ tasks:
     before: |
       sdk install java 17.0.4.1-tem < /dev/null
     command: |
-      ./mvnw spring-boot:run
+      ./mvnw clean spring-boot:run
       echo Backend running
 
   - name: frontend
