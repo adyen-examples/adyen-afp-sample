@@ -35,15 +35,15 @@ git clone https://github.com/adyen-examples/adyen-afp-sample.git
 
 On Linux/Mac/Windows export/set the environment variables.
 ```shell
-export BCL_API_KEY=yourBclApiKey
-export LEM_API_KEY=yourLemApiKey
+export ADYEN_BCL_API_KEY=yourBclApiKey
+export ADYEN_LEM_API_KEY=yourLemApiKey
 export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
 Alternatively, define the variables in the `config/application.properties`.
 ```txt
-BCL_API_KEY=yourBclApiKey
-LEM_API_KEY=yourLemApiKey
+ADYEN_BCL_API_KEY=yourBclApiKey
+ADYEN_LEM_API_KEY=yourLemApiKey
 ADYEN_HMAC_KEY=yourHmacKey
 ```
 
