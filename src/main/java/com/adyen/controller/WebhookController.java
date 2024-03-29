@@ -50,6 +50,7 @@ public class WebhookController {
             throw new RuntimeException("HMAC Signature not found");
         }
 
+        // disabled for convenience: HMAC validation should be enabled on your integration
 //        if (!hmacValidator.validateHMAC(json, hmacsignature, applicationProperty.getHmacKey())) {
 //            log.warn("Invalid HMAC signature");
 //            throw new RuntimeException("Invalid HMAC signature");
