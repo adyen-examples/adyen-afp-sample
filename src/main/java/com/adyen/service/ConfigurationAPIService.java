@@ -6,10 +6,14 @@ import com.adyen.enums.Environment;
 import com.adyen.model.AccountHolderStatus;
 import com.adyen.model.TransactionItem;
 import com.adyen.model.balanceplatform.*;
+import com.adyen.model.legalentitymanagement.BusinessLine;
+import com.adyen.model.legalentitymanagement.BusinessLineInfo;
+import com.adyen.model.legalentitymanagement.WebData;
 import com.adyen.model.transfers.Transaction;
 import com.adyen.model.transfers.TransactionSearchResponse;
 import com.adyen.service.balanceplatform.AccountHoldersApi;
 import com.adyen.service.balanceplatform.BalanceAccountsApi;
+import com.adyen.service.legalentitymanagement.BusinessLinesApi;
 import com.adyen.service.transfers.TransactionsApi;
 import com.adyen.util.TransactionHandler;
 import org.slf4j.Logger;
@@ -92,6 +96,11 @@ public class ConfigurationAPIService {
         return status;
     }
 
+    /**
+     * Create AccountHolder
+     * @param legalEntityId
+     * @return
+     */
     public AccountHolder createAccountHolder(String legalEntityId) {
         AccountHolder accountHolder = null;
 
@@ -110,6 +119,11 @@ public class ConfigurationAPIService {
         return accountHolder;
     }
 
+    /**
+     * Create BalanceAccount
+     * @param accountHolderId
+     * @return
+     */
     public BalanceAccount createBalanceAccount(String accountHolderId) {
 
         BalanceAccount balanceAccount = null;
@@ -155,7 +169,7 @@ public class ConfigurationAPIService {
             transactionItems = getTransactionHandler().getTransactionItems(transactionSearchResponse.getData());
         } catch (Exception e) {
             log.error(e.toString(), e);
-            throw new RuntimeException("Cannot create BalanceAccount: " + e.getMessage());
+            throw new RuntimeException("Cannot get transactions: " + e.getMessage());
         }
 
         return transactionItems;
@@ -175,7 +189,6 @@ public class ConfigurationAPIService {
     private TransactionsApi getTransactionsApi() {
         return new TransactionsApi(getApiClient());
     }
-
 
     // create client to access the Configuration API
     private Client getApiClient() {

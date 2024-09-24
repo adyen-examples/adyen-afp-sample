@@ -6,6 +6,7 @@ import com.adyen.enums.Environment;
 import com.adyen.model.IndividualSignup;
 import com.adyen.model.OrganisationSignup;
 import com.adyen.model.legalentitymanagement.*;
+import com.adyen.service.legalentitymanagement.BusinessLinesApi;
 import com.adyen.service.legalentitymanagement.HostedOnboardingApi;
 import com.adyen.service.legalentitymanagement.LegalEntitiesApi;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -100,6 +102,36 @@ public class LegalEntityManagementAPIService {
     }
 
     /**
+     * Create BusinessLine
+     * @param legalEntityId
+     * @return
+     */
+    public BusinessLine createBusinessLine(String legalEntityId) {
+
+        BusinessLine businessLine = null;
+
+        try {
+            BusinessLineInfo businessLineInfo = new BusinessLineInfo();
+            businessLineInfo
+                    .legalEntityId(legalEntityId)
+                    .industryCode("722513") // 	'Limited-service restaurants', seehttps://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes
+                    .salesChannels(List.of("eCommerce", "payByLink"))
+                    .service(BusinessLineInfo.ServiceEnum.PAYMENTPROCESSING)
+                    .webData(List.of(new WebData()
+                            .webAddress("https://example.com")));
+
+            businessLine = getBusinessLinesApi().createBusinessLine(businessLineInfo);
+
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot create BusinessLine: " + e.getMessage());
+        }
+
+        return businessLine;
+    }
+
+
+    /**
      * Generate the Hosted Onboarding link for the Legal entity
      * @param legalEntityId
      * @param host Host where the application is running
@@ -148,6 +180,11 @@ public class LegalEntityManagementAPIService {
     // LegalEntitiesApi handler
     private LegalEntitiesApi getLegalEntitiesApi() {
         return new LegalEntitiesApi(getApiClient());
+    }
+
+    // BusinessLinesApi handler
+    private BusinessLinesApi getBusinessLinesApi() {
+        return new BusinessLinesApi(getApiClient());
     }
 
     // HostedOnboardingApi handler
