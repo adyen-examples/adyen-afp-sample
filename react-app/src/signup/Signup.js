@@ -14,7 +14,7 @@ import Tab from '@mui/material/Tab';
 
 function Signup() {
 
-    const [value, setValue] = React.useState('individual');
+    const [value, setValue] = React.useState('soleproprietorship');
 
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
