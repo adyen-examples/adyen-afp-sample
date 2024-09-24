@@ -138,10 +138,9 @@ public class LegalEntityManagementAPIService {
         // when undefined the default theme will be used
         onboardingLinkInfo.setThemeId(getApplicationProperty().getHostedOnboardingThemeId());
         // additional settings
-        onboardingLinkInfo.setSettings(
-                Map.of("changeLegalEntityType", true,
-                        "editPrefilledCountry", false)
-        );
+        onboardingLinkInfo.setSettings(new OnboardingLinkSettings()
+                .changeLegalEntityType(false)
+                .editPrefilledCountry(false));
 
         return onboardingLinkInfo;
     }
