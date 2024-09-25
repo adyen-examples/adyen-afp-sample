@@ -5,6 +5,7 @@ import com.adyen.config.ApplicationProperty;
 import com.adyen.enums.Environment;
 import com.adyen.model.IndividualSignup;
 import com.adyen.model.OrganisationSignup;
+import com.adyen.model.SoleProprietorshipSignup;
 import com.adyen.model.legalentitymanagement.*;
 import com.adyen.service.legalentitymanagement.BusinessLinesApi;
 import com.adyen.service.legalentitymanagement.HostedOnboardingApi;
@@ -64,6 +65,33 @@ public class LegalEntityManagementAPIService {
                             .residentialAddress(
                                     new com.adyen.model.legalentitymanagement.Address()
                                             .country(individualSignup.getCountryCode())
+                            ));
+
+            legalEntity = getLegalEntitiesApi().createLegalEntity(legalEntityInfoRequiredType);
+
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot create LegalEntity: " + e.getMessage());
+        }
+
+        return legalEntity;
+    }
+
+    public LegalEntity create(SoleProprietorshipSignup soleProprietorshipSignup) {
+
+        LegalEntity legalEntity = null;
+
+        try {
+            LegalEntityInfoRequiredType legalEntityInfoRequiredType = new LegalEntityInfoRequiredType();
+            legalEntityInfoRequiredType
+                    .type(LegalEntityInfoRequiredType.TypeEnum.INDIVIDUAL)
+                    .individual(new Individual()
+                            .name(new com.adyen.model.legalentitymanagement.Name()
+                                    .firstName(soleProprietorshipSignup.getFirstName())
+                                    .lastName(soleProprietorshipSignup.getLastName()))
+                            .residentialAddress(
+                                    new com.adyen.model.legalentitymanagement.Address()
+                                            .country(soleProprietorshipSignup.getCountryCode())
                             ));
 
             legalEntity = getLegalEntitiesApi().createLegalEntity(legalEntityInfoRequiredType);
