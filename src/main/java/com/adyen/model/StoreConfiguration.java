@@ -7,6 +7,8 @@ public class StoreConfiguration {
     private String countryCode;
     private String storeName;
 
+    private StoreConfigurationAddress address;
+
     public String getBusinessLineId() {
         return businessLineId;
     }
@@ -56,6 +58,19 @@ public class StoreConfiguration {
 
     public StoreConfiguration storeName(String storeName) {
         this.storeName = storeName;
+        return this;
+    }
+
+    public StoreConfigurationAddress getAddress() {
+        return address;
+    }
+
+    public void setAddress(StoreConfigurationAddress address) {
+        this.address = address;
+    }
+
+    public StoreConfiguration address(StoreConfigurationAddress address) {
+        this.address = address;
         return this;
     }
 
