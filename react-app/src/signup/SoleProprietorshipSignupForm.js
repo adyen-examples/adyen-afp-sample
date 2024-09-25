@@ -36,7 +36,7 @@ function SoleProprietorshipSignupForm() {
 
         setInvalidSignup(false);
 
-        axios.post('/api/signup/individual', formData)
+        axios.post('/api/signup/soleproprietorship', formData)
             .then((response) => {
                 navigate('/dashboard');
         })
