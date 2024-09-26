@@ -31,9 +31,12 @@ public class ManagementAPIService {
     @Autowired
     private ApplicationProperty applicationProperty;
 
+    @Autowired
+    private AddressHandler addressHandler;
+
     /**
      * Create Store to route the payments through.
-     * Create and assign a default SplitConfiguration
+     * Create and assign a default SplitConfiguration to the store
      * @param storeConfiguration
      * @return
      */
@@ -41,20 +44,25 @@ public class ManagementAPIService {
         Store store = null;
 
         try {
+
+            SplitConfiguration splitConfiguration = createSplitConfiguration(
+                    getApplicationProperty().getMerchantAccount(), getDefaultSplitConfiguration());
+
             StoreCreationWithMerchantCodeRequest storeCreationWithMerchantCodeRequest = new StoreCreationWithMerchantCodeRequest()
                     .merchantId(getApplicationProperty().getMerchantAccount())
-                    .address(new StoreLocation()
-                            .country(storeConfiguration.getCountryCode()))
+                    .address(getAddressHandler().getStoreLocation(storeConfiguration.getAddress()))
                     .description("Web store for BL " + storeConfiguration.getBusinessLineId())
                     .businessLineIds(List.of(storeConfiguration.getBusinessLineId()))
                     .phoneNumber("+1 2343445345")
                     .reference("storeReference-0001")
                     .shopperStatement(storeConfiguration.getStoreName())
                     .splitConfiguration(new StoreSplitConfiguration()
-                            .splitConfigurationId(getDefaultSplitConfiguration().getSplitConfigurationId())
+                            .splitConfigurationId(splitConfiguration.getSplitConfigurationId())
                             .balanceAccountId(storeConfiguration.getBalanceAccountId()));
 
             store = getAccountStoreLevelApi().createStore(storeCreationWithMerchantCodeRequest);
+            log.info("Store created id:{}, description:'{}'", store.getId(), store.getDescription());
+
 
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -64,6 +72,10 @@ public class ManagementAPIService {
         return store;
     }
 
+    /**
+     * Define the default SplitConfiguration to apply to all sub-merchants
+     * @return
+     */
     SplitConfiguration getDefaultSplitConfiguration() {
         return new SplitConfiguration()
                 .description("Default Split Configuration for sub-merchants")
@@ -83,9 +95,38 @@ public class ManagementAPIService {
                 ));
     }
 
+    /**
+     * Create a SplitConfiguration
+     * @param merchantAccount
+     * @param splitConfigurationInfo
+     * @return
+     */
+    public SplitConfiguration createSplitConfiguration(String merchantAccount, SplitConfiguration splitConfigurationInfo) {
+
+        SplitConfiguration splitConfiguration = null;
+
+        try {
+            splitConfiguration = splitConfigurationMerchantLevelApi().createSplitConfiguration(
+                    merchantAccount, splitConfigurationInfo);
+            log.info("SplitConfiguration created id:{}, description:'{}'",
+                    splitConfiguration.getSplitConfigurationId(), splitConfiguration.getDescription());
+
+
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot create SplitConfiguration: " + e.getMessage());
+        }
+
+        return splitConfiguration;
+    }
+
     // AccountStoreLevelApi handler
     private AccountStoreLevelApi getAccountStoreLevelApi() {
         return new AccountStoreLevelApi(getApiClient());
+    }
+
+    private SplitConfigurationMerchantLevelApi splitConfigurationMerchantLevelApi() {
+        return new SplitConfigurationMerchantLevelApi(getApiClient());
     }
 
 
@@ -109,4 +150,11 @@ public class ManagementAPIService {
         this.applicationProperty = applicationProperty;
     }
 
+    public AddressHandler getAddressHandler() {
+        return addressHandler;
+    }
+
+    public void setAddressHandler(AddressHandler addressHandler) {
+        this.addressHandler = addressHandler;
+    }
 }
