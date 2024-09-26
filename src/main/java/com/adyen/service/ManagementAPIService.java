@@ -41,7 +41,7 @@ public class ManagementAPIService {
      * @return
      */
     public Store createStore(StoreConfiguration storeConfiguration) {
-        Store store = null;
+        Store store;
 
         try {
 
@@ -103,14 +103,13 @@ public class ManagementAPIService {
      */
     public SplitConfiguration createSplitConfiguration(String merchantAccount, SplitConfiguration splitConfigurationInfo) {
 
-        SplitConfiguration splitConfiguration = null;
+        SplitConfiguration splitConfiguration;
 
         try {
             splitConfiguration = splitConfigurationMerchantLevelApi().createSplitConfiguration(
                     merchantAccount, splitConfigurationInfo);
             log.info("SplitConfiguration created id:{}, description:'{}'",
                     splitConfiguration.getSplitConfigurationId(), splitConfiguration.getDescription());
-
 
         } catch (Exception e) {
             log.error(e.toString(), e);

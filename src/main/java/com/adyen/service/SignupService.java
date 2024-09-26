@@ -77,6 +77,9 @@ public class SignupService {
 
     /**
      * Complete the signup after AccountHolder onboarding is completed
+     *
+     * This is triggered when the webhook event `balancePlatform.accountHolder.updated`
+     * is received
      * @param accountHolderId
      */
     public void completeSignup(String accountHolderId) {
@@ -89,9 +92,10 @@ public class SignupService {
         }
 
         AccountHolder accountHolder = optionalAccountHolder.get();
+        AccountHolderStatus status = getConfigurationAPIService().getAccountHolderStatus(accountHolder);
 
-        if(getConfigurationAPIService().getAccountHolderStatus(accountHolder).equals(AccountHolderStatus.VALID)) {
-            // Onboarding is completed: complete signup
+        if(status.equals(AccountHolderStatus.VALID)) {
+            // Onboarding is completed and AccountHolder status is now valid
             LegalEntity legalEntity = getLegalEntityManagementAPIService().get(accountHolder.getLegalEntityId());
 
             // create Business Line
@@ -124,6 +128,8 @@ public class SignupService {
             log.info("Signup completed for legalEntityId:{}",
                     legalEntity.getId());
 
+        } else {
+            log.info("Cannot complete signup - The AccountHolder status is {}", status);
         }
     }
 

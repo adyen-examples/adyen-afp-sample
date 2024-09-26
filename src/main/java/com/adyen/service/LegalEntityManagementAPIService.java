@@ -137,13 +137,13 @@ public class LegalEntityManagementAPIService {
      */
     public BusinessLine createBusinessLine(String legalEntityId) {
 
-        BusinessLine businessLine = null;
+        BusinessLine businessLine;
 
         try {
             BusinessLineInfo businessLineInfo = new BusinessLineInfo();
             businessLineInfo
                     .legalEntityId(legalEntityId)
-                    .industryCode("722513") // 	'Limited-service restaurants', seehttps://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes
+                    .industryCode("722513") // 	'Limited-service restaurants', see https://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes
                     .salesChannels(List.of("eCommerce", "payByLink"))
                     .service(BusinessLineInfo.ServiceEnum.PAYMENTPROCESSING)
                     .webData(List.of(new WebData()
