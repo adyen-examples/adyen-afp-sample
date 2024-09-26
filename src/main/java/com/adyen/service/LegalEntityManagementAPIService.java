@@ -41,6 +41,7 @@ public class LegalEntityManagementAPIService {
         try {
 
             legalEntity = getLegalEntitiesApi().getLegalEntity(id);
+            log.info(legalEntity.toString());
 
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -149,6 +150,7 @@ public class LegalEntityManagementAPIService {
                             .webAddress("https://example.com")));
 
             businessLine = getBusinessLinesApi().createBusinessLine(businessLineInfo);
+            log.info("BusinessLine created id:{}, legalEntityId:{}", businessLine.getId(), businessLine.getLegalEntityId());
 
         } catch (Exception e) {
             log.error(e.toString(), e);

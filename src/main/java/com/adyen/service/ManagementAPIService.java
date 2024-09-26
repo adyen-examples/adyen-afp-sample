@@ -3,32 +3,17 @@ package com.adyen.service;
 import com.adyen.Client;
 import com.adyen.config.ApplicationProperty;
 import com.adyen.enums.Environment;
-import com.adyen.model.AccountHolderStatus;
 import com.adyen.model.StoreConfiguration;
-import com.adyen.model.TransactionItem;
-import com.adyen.model.balanceplatform.*;
-import com.adyen.model.legalentitymanagement.BusinessLine;
-import com.adyen.model.legalentitymanagement.BusinessLineInfo;
-import com.adyen.model.legalentitymanagement.WebData;
 import com.adyen.model.management.*;
-import com.adyen.model.transfers.TransactionSearchResponse;
-import com.adyen.service.balanceplatform.AccountHoldersApi;
-import com.adyen.service.balanceplatform.BalanceAccountsApi;
-import com.adyen.service.legalentitymanagement.BusinessLinesApi;
 import com.adyen.service.management.AccountStoreLevelApi;
-import com.adyen.service.transfers.TransactionsApi;
-import com.adyen.util.TransactionHandler;
+import com.adyen.service.management.SplitConfigurationMerchantLevelApi;
+import com.adyen.util.AddressHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Wraps the Adyen Management API: manage stores and other configuration settings
