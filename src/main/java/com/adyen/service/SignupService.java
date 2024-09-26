@@ -1,6 +1,5 @@
 package com.adyen.service;
 
-import com.adyen.controller.SignupController;
 import com.adyen.model.*;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.balanceplatform.BalanceAccount;
@@ -101,7 +100,7 @@ public class SignupService {
             Address address = null;
 
             if (legalEntity.getType().equals(LegalEntity.TypeEnum.ORGANIZATION)) {
-                address = legalEntity.getOrganization().getPrincipalPlaceOfBusiness();
+                address = legalEntity.getOrganization().getRegisteredAddress();
             } else if (legalEntity.getType().equals(LegalEntity.TypeEnum.SOLEPROPRIETORSHIP)) {
                 address = legalEntity.getSoleProprietorship().getPrincipalPlaceOfBusiness();
             } else if (legalEntity.getType().equals(LegalEntity.TypeEnum.INDIVIDUAL)) {
@@ -112,7 +111,7 @@ public class SignupService {
             }
 
             StoreConfigurationAddress storeConfigurationAddress =
-                    getAddressHandler().getStoreConfigurationAddress(address);
+                    getAddressHandler().getStoreLocation(address);
 
             // create Store
             Store store = getManagementAPIService().createStore(new StoreConfiguration()
@@ -122,8 +121,8 @@ public class SignupService {
                     .storeName("Store " + storeConfigurationAddress.getCity())
                     .address(storeConfigurationAddress));
 
-            log.info("Signup completed legalEntity:{}, businessLine:{}, store:{}",
-                    legalEntity.getId(), businessLine.getId(), store.getId());
+            log.info("Signup completed for legalEntityId:{}",
+                    legalEntity.getId());
 
         }
     }
