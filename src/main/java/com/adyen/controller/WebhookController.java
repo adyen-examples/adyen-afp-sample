@@ -14,6 +14,7 @@ import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,7 +115,7 @@ public class WebhookController {
         }
 
         // Acknowledge event has been consumed
-        return ResponseEntity.ok().body("[accepted]");
+        return ResponseEntity.status(202).body("");
 
     }
 
