@@ -6,6 +6,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationProperty {
 
+    @Value("${ADYEN_API_KEY}")
+    private String apiKey;
+
+    @Value("${ADYEN_MERCHANT_ACCOUNT}")
+    private String merchantAccount;
+
     @Value("${ADYEN_LEM_API_KEY}")
     private String lemApiKey;
 
@@ -17,6 +23,22 @@ public class ApplicationProperty {
 
     @Value("${ADYEN_HOSTED_ONBOARDING_THEME_ID}")
     private String hostedOnboardingThemeId;
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getMerchantAccount() {
+        return merchantAccount;
+    }
+
+    public void setMerchantAccount(String merchantAccount) {
+        this.merchantAccount = merchantAccount;
+    }
 
     public String getLemApiKey() {
         return lemApiKey;

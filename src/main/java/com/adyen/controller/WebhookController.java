@@ -2,15 +2,19 @@ package com.adyen.controller;
 
 import com.adyen.config.ApplicationProperty;
 import com.adyen.exception.InvalidWebhookTypeException;
+import com.adyen.model.configurationwebhooks.AccountHolder;
 import com.adyen.model.configurationwebhooks.AccountHolderNotificationRequest;
 import com.adyen.model.configurationwebhooks.BalanceAccountNotificationRequest;
 import com.adyen.model.configurationwebhooks.PaymentNotificationRequest;
 import com.adyen.notification.BankingWebhookHandler;
+import com.adyen.service.ConfigurationAPIService;
+import com.adyen.service.SignupService;
 import com.adyen.util.AfpEventHandler;
 import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +28,9 @@ import java.util.Map;
 @RequestMapping("/api")
 public class WebhookController {
     private final Logger log = LoggerFactory.getLogger(WebhookController.class);
+
+    @Autowired
+    private SignupService signupService;
 
     @Autowired
     private ApplicationProperty applicationProperty;
@@ -73,7 +80,8 @@ public class WebhookController {
                 break;
             case "balancePlatform.accountHolder.updated":
                 webhookHandler.getAccountHolderNotificationRequest().ifPresent((AccountHolderNotificationRequest event) -> {
-                    //  AccountHolder updated
+                    //  AccountHolder updated: complete signup
+                    getSignupService().completeSignup(event.getData().getAccountHolder().getId());
                 });
                 break;
             case "balancePlatform.balanceAccount.created":
@@ -107,7 +115,7 @@ public class WebhookController {
         }
 
         // Acknowledge event has been consumed
-        return ResponseEntity.ok().body("[accepted]");
+        return ResponseEntity.status(202).body("");
 
     }
 
@@ -118,4 +126,13 @@ public class WebhookController {
     public void setApplicationProperty(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
     }
+
+    public SignupService getSignupService() {
+        return signupService;
+    }
+
+    public void setSignupService(SignupService signupService) {
+        this.signupService = signupService;
+    }
+
 }

@@ -5,7 +5,9 @@ import com.adyen.config.ApplicationProperty;
 import com.adyen.enums.Environment;
 import com.adyen.model.IndividualSignup;
 import com.adyen.model.OrganisationSignup;
+import com.adyen.model.SoleProprietorshipSignup;
 import com.adyen.model.legalentitymanagement.*;
+import com.adyen.service.legalentitymanagement.BusinessLinesApi;
 import com.adyen.service.legalentitymanagement.HostedOnboardingApi;
 import com.adyen.service.legalentitymanagement.LegalEntitiesApi;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,6 +41,7 @@ public class LegalEntityManagementAPIService {
         try {
 
             legalEntity = getLegalEntitiesApi().getLegalEntity(id);
+            log.info(legalEntity.toString());
 
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -74,6 +78,33 @@ public class LegalEntityManagementAPIService {
         return legalEntity;
     }
 
+    public LegalEntity create(SoleProprietorshipSignup soleProprietorshipSignup) {
+
+        LegalEntity legalEntity = null;
+
+        try {
+            LegalEntityInfoRequiredType legalEntityInfoRequiredType = new LegalEntityInfoRequiredType();
+            legalEntityInfoRequiredType
+                    .type(LegalEntityInfoRequiredType.TypeEnum.INDIVIDUAL)
+                    .individual(new Individual()
+                            .name(new com.adyen.model.legalentitymanagement.Name()
+                                    .firstName(soleProprietorshipSignup.getFirstName())
+                                    .lastName(soleProprietorshipSignup.getLastName()))
+                            .residentialAddress(
+                                    new com.adyen.model.legalentitymanagement.Address()
+                                            .country(soleProprietorshipSignup.getCountryCode())
+                            ));
+
+            legalEntity = getLegalEntitiesApi().createLegalEntity(legalEntityInfoRequiredType);
+
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot create LegalEntity: " + e.getMessage());
+        }
+
+        return legalEntity;
+    }
+
     public LegalEntity create(OrganisationSignup organisationSignup) {
 
         LegalEntity legalEntity = null;
@@ -98,6 +129,37 @@ public class LegalEntityManagementAPIService {
 
         return legalEntity;
     }
+
+    /**
+     * Create BusinessLine
+     * @param legalEntityId
+     * @return
+     */
+    public BusinessLine createBusinessLine(String legalEntityId) {
+
+        BusinessLine businessLine;
+
+        try {
+            BusinessLineInfo businessLineInfo = new BusinessLineInfo();
+            businessLineInfo
+                    .legalEntityId(legalEntityId)
+                    .industryCode("722513") // 	'Limited-service restaurants', see https://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes
+                    .salesChannels(List.of("eCommerce", "payByLink"))
+                    .service(BusinessLineInfo.ServiceEnum.PAYMENTPROCESSING)
+                    .webData(List.of(new WebData()
+                            .webAddress("https://example.com")));
+
+            businessLine = getBusinessLinesApi().createBusinessLine(businessLineInfo);
+            log.info("BusinessLine created id:{}, legalEntityId:{}", businessLine.getId(), businessLine.getLegalEntityId());
+
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw new RuntimeException("Cannot create BusinessLine: " + e.getMessage());
+        }
+
+        return businessLine;
+    }
+
 
     /**
      * Generate the Hosted Onboarding link for the Legal entity
@@ -148,6 +210,11 @@ public class LegalEntityManagementAPIService {
     // LegalEntitiesApi handler
     private LegalEntitiesApi getLegalEntitiesApi() {
         return new LegalEntitiesApi(getApiClient());
+    }
+
+    // BusinessLinesApi handler
+    private BusinessLinesApi getBusinessLinesApi() {
+        return new BusinessLinesApi(getApiClient());
     }
 
     // HostedOnboardingApi handler

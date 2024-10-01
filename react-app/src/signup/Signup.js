@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 
 import Footer from "../layout/Footer.js";
 import SmallBanner from "../layout/SmallBanner.js";
-import IndividualSignupForm from "./IndividualSignupForm.js";
+import SoleProprietorshipSignupForm from "./SoleProprietorshipSignupForm.js";
 import OrganizationSignupForm from "./OrganizationSignupForm.js";
 
 import Tabs from '@mui/material/Tabs';
@@ -14,7 +14,7 @@ import Tab from '@mui/material/Tab';
 
 function Signup() {
 
-    const [value, setValue] = React.useState('individual');
+    const [value, setValue] = React.useState('soleproprietorship');
 
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
@@ -37,13 +37,13 @@ function Signup() {
             <Tabs value={value}
                 onChange={handleTabChange} aria-label="disabled tabs example"
                 textColor="secondary" indicatorColor="secondary">
-                <Tab value="individual" label="Individual" />
+                <Tab value="soleproprietorship" label="Sole Proprietorship" />
                <Tab value="organization" label="Organization" />
             </Tabs>
             <br/>
 
-            <Box hidden={value !== "individual"}>
-                <IndividualSignupForm/>
+            <Box hidden={value !== "soleproprietorship"}>
+                <SoleProprietorshipSignupForm/>
             </Box>
             <Box hidden={value !== "organization"}>
                 <OrganizationSignupForm/>
