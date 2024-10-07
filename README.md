@@ -31,12 +31,16 @@ git clone https://github.com/adyen-examples/adyen-afp-sample.git
 ## 2. Set the environment variables
 * [BCL API key](https://docs.adyen.com/marketplaces-and-platforms/get-started/): API key for accessing Balance Platform [Configuration API](https://docs.adyen.com/api-explorer/balanceplatform/latest/overview)
 * [LEM API key](https://docs.adyen.com/marketplaces-and-platforms/get-started/): API key for accessing [Legal Entity Management API](https://docs.adyen.com/api-explorer/legalentity/latest/overview)
+* [API Key](https://docs.adyen.com/development-resources/api-credentials/#generate-api-key): API key for accessing [Checkout API](https://docs.adyen.com/api-explorer/Checkout) and [Management API](https://docs.adyen.com/api-explorer/Management/)
+* [Merchant account](https://docs.adyen.com/account/account-structure/#merchant-accounts): the merchant account to to configure and process the payments
 * [HMAC key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures): HMAC key to validate incoming webhook requests
 
 On Linux/Mac/Windows export/set the environment variables.
 ```shell
 export ADYEN_BCL_API_KEY=yourBclApiKey
 export ADYEN_LEM_API_KEY=yourLemApiKey
+export ADYEN_API_KEY=yourCheckoutApiKey
+export ADYEN_MERCHANT_ACCOUNT=yourCheckoutMerchantAccount
 export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
@@ -44,6 +48,8 @@ Alternatively, define the variables in the `config/application.properties`.
 ```txt
 ADYEN_BCL_API_KEY=yourBclApiKey
 ADYEN_LEM_API_KEY=yourLemApiKey
+ADYEN_API_KEY=yourCheckoutApiKey
+ADYEN_MERCHANT_ACCOUNT=yourCheckoutMerchantAccount
 ADYEN_HMAC_KEY=yourHmacKey
 ```
 
