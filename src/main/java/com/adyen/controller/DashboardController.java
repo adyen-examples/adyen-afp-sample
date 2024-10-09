@@ -118,7 +118,7 @@ public class DashboardController extends BaseController {
 
         // Perform session call to obtain a valid Session token
         SessionRequest sessionRequest = new SessionRequest()
-                .allowOrigin("http://localhost:3000")
+                .allowOrigin("http://localhost")
                 .product("platform")
                 .policy(new SessionRequestPolicy()
                         .resources(List.of(new PolicyResource()
