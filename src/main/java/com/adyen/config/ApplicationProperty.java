@@ -24,6 +24,12 @@ public class ApplicationProperty {
     @Value("${ADYEN_HOSTED_ONBOARDING_THEME_ID}")
     private String hostedOnboardingThemeId;
 
+    @Value("${ADYEN_SESSION_AUTHENTICATION_API_URL:https://test.adyen.com/authe/api/v1/sessions}")
+    private String sessionAuthenticationApiUrl;
+
+    @Value("${ADYEN_COMPONENTS_ALLOW_ORIGIN}")
+    private String componentsAllowOrigin;
+
     public String getApiKey() {
         return apiKey;
     }
@@ -70,5 +76,21 @@ public class ApplicationProperty {
 
     public void setHmacKey(String hmacKey) {
         this.hmacKey = hmacKey;
+    }
+
+    public String getSessionAuthenticationApiUrl() {
+        return sessionAuthenticationApiUrl;
+    }
+
+    public void setSessionAuthenticationApiUrl(String sessionAuthenticationApiUrl) {
+        this.sessionAuthenticationApiUrl = sessionAuthenticationApiUrl;
+    }
+
+    public String getComponentsAllowOrigin() {
+        return componentsAllowOrigin;
+    }
+
+    public void setComponentsAllowOrigin(String componentsAllowOrigin) {
+        this.componentsAllowOrigin = componentsAllowOrigin;
     }
 }

@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import BarChartIcon from '@mui/icons-material/BarChart';
 
 import { useNavigate } from 'react-router-dom';
 
