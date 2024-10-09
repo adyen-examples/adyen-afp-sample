@@ -1,14 +1,14 @@
 package com.adyen.controller;
 
-import com.adyen.model.OnboardingLinkProperties;
-import com.adyen.model.TransactionItem;
-import com.adyen.model.User;
+import com.adyen.config.ApplicationProperty;
+import com.adyen.model.*;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.legalentitymanagement.LegalEntity;
 import com.adyen.model.legalentitymanagement.OnboardingLink;
 import com.adyen.service.ConfigurationAPIService;
 import com.adyen.service.LegalEntityManagementAPIService;
 import com.adyen.util.LegalEntityHandler;
+import com.adyen.util.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,11 @@ public class DashboardController extends BaseController {
     private LegalEntityManagementAPIService legalEntityManagementAPIService;
     @Autowired
     private LegalEntityHandler legalEntityHandler;
+    @Autowired
+    private RestClient restClient;
+    @Autowired
+    private ApplicationProperty applicationProperty;
+
 
     /**
      * Get User who has logged in (user id found in Session)
@@ -95,13 +100,54 @@ public class DashboardController extends BaseController {
                 );
     }
 
+    /**
+     * Displays the AccountHolder transactions using the Adyen Transactions component
+     *
+     * This demonstrates how to integrate the Adyen web component that fetches and
+     * displays the transactions
+     *
+     * @return
+     */
     @PostMapping("/getTransactions")
-    ResponseEntity<List<TransactionItem>> getTransactions() {
+    ResponseEntity<SessionResponse> getTransactions() {
 
         if (getUserIdOnSession() == null) {
             log.warn("User is not logged in");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
+        // Perform session call to obtain a valid Session token
+        SessionRequest sessionRequest = new SessionRequest()
+                .allowOrigin("http://localhost:3000")
+                .product("platform")
+                .policy(new SessionRequestPolicy()
+                        .resources(List.of(new PolicyResource()
+                                .accountHolderId(getUserIdOnSession())
+                                .type("accountHolder")))
+                        .roles(List.of("Transactions Overview Component: View")));
+
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * Displays the AccountHolder transactions in a custom view
+     *
+     * This demonstrates how to fetch the AccountHolder transactions via API and
+     * display them in a custom-built view
+     *
+     * @return
+     */
+    @PostMapping("/getTransactionsCustomView")
+    ResponseEntity<List<TransactionItem>> getTransactionsCustomView() {
+
+        if (getUserIdOnSession() == null) {
+            log.warn("User is not logged in");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+
 
         return new ResponseEntity<>(
                 getConfigurationAPIService().getTransactions(getUserIdOnSession()), HttpStatus.ACCEPTED);
@@ -129,5 +175,21 @@ public class DashboardController extends BaseController {
 
     public void setLegalEntityHandler(LegalEntityHandler legalEntityHandler) {
         this.legalEntityHandler = legalEntityHandler;
+    }
+
+    public RestClient getRestClient() {
+        return restClient;
+    }
+
+    public void setRestClient(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    public ApplicationProperty getApplicationProperty() {
+        return applicationProperty;
+    }
+
+    public void setApplicationProperty(ApplicationProperty applicationProperty) {
+        this.applicationProperty = applicationProperty;
     }
 }
