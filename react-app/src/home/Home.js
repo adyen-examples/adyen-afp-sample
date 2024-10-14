@@ -18,7 +18,7 @@ const card1 = (
     <React.Fragment>
       <CardContent sx={{height: 200}}>
         <div>
-            <img src="/onboarding.png" alt="Image Description" style={{ width: '10%', height: '10%' }}/>
+            <img src="/onboarding.png" alt="Users onboarding" style={{ width: '10%', height: '10%' }}/>
         </div>
         <br/>
         <Typography variant="h4"  gutterBottom>
@@ -35,7 +35,7 @@ const card2 = (
     <React.Fragment>
       <CardContent sx={{height: 200}}>
         <div>
-            <img src="/payments.png" alt="Image Description" style={{ width: '10%', height: '10%' }}/>
+            <img src="/payments.png" alt="Support for multiple payment methods" style={{ width: '10%', height: '10%' }}/>
         </div>
         <br/>
         <Typography variant="h4"  gutterBottom>
@@ -52,7 +52,7 @@ const card3 = (
     <React.Fragment>
       <CardContent sx={{height: 200}}>
         <div>
-            <img src="/online-shopping.png" alt="Image Description" style={{ width: '10%', height: '10%' }}/>
+            <img src="/online-shopping.png" alt="Online shopping" style={{ width: '10%', height: '10%' }}/>
         </div>
         <br/>
         <Typography variant="h4" gutterBottom>
