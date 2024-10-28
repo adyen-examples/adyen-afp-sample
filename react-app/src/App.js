@@ -7,6 +7,7 @@ import Dashboard from './dashboard/Dashboard.js';
 import Products from './dashboard/Products.js';
 import Transactions from './dashboard/Transactions.js';
 import Payouts from './dashboard/Payouts.js';
+import Reports from './dashboard/Reports.js';
 import Settings from './dashboard/Settings.js';
 import Login from './signup/Login.js';
 
@@ -21,6 +22,7 @@ function App() {
           <Route exact path="/products" element={<Products />} />
           <Route exact path="/transactions" element={<Transactions />} />
           <Route exact path="/payouts" element={<Payouts />} />
+          <Route exact path="/reports" element={<Reports />} />
           <Route exact path="/settings" element={<Settings />} />
          </Routes>
     </Router>
