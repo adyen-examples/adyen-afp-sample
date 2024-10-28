@@ -70,7 +70,7 @@ export default function Reports() {
         <Toolbar />
 
         <Divider sx={{ padding: 1 }}>
-            <Chip label="My Payouts" variant="elevated" sx={{ minWidth: 100, fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
+            <Chip label="My Reports" variant="elevated" sx={{ minWidth: 100, fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
         </Divider>
 
         <Paper sx={{ width: '100%' }}>
