@@ -117,15 +117,7 @@ public class DashboardController extends BaseController {
         }
 
         // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = new SessionRequest()
-                .allowOrigin(getApplicationProperty().getComponentsAllowOrigin())
-                .product("platform")
-                .policy(new SessionRequestPolicy()
-                        .resources(List.of(new PolicyResource()
-                                .accountHolderId(getUserIdOnSession())
-                                .type("accountHolder")))
-                        .roles(List.of("Transactions Overview Component: View")));
-
+        SessionRequest sessionRequest = getSessionRequest("Transactions Overview Component: View");
         SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
@@ -147,10 +139,67 @@ public class DashboardController extends BaseController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-
-
         return new ResponseEntity<>(
                 getConfigurationAPIService().getTransactions(getUserIdOnSession()), HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * Displays the Account Holder Payouts using the Adyen Payouts component
+     *
+     * This demonstrates how to integrate the Adyen web component that fetches and
+     * displays the payouts
+     *
+     * @return
+     */
+    @PostMapping("/getPayouts")
+    ResponseEntity<SessionResponse> getPayouts() {
+
+        if (getUserIdOnSession() == null) {
+            log.warn("User is not logged in");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Perform session call to obtain a valid Session token
+        SessionRequest sessionRequest = getSessionRequest("Payouts Overview Component: View");
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * Displays the Account Holder Reports using the Adyen Reports component
+     *
+     * This demonstrates how to integrate the Adyen web component that fetches and
+     * displays the reports
+     *
+     * @return
+     */
+    @PostMapping("/getReports")
+    ResponseEntity<SessionResponse> getReports() {
+
+        if (getUserIdOnSession() == null) {
+            log.warn("User is not logged in");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Perform session call to obtain a valid Session token
+        SessionRequest sessionRequest = getSessionRequest("Reports Overview Component: View");
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    // define SessionRequest object
+    private SessionRequest getSessionRequest(String role) {
+        SessionRequest sessionRequest = new SessionRequest()
+                .allowOrigin(getApplicationProperty().getComponentsAllowOrigin())
+                .product("platform")
+                .policy(new SessionRequestPolicy()
+                        .resources(List.of(new PolicyResource()
+                                .accountHolderId(getUserIdOnSession())
+                                .type("accountHolder")))
+                        .roles(List.of(role)));
+        return sessionRequest;
     }
 
     public ConfigurationAPIService getConfigurationAPIService() {
