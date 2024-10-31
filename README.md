@@ -88,8 +88,7 @@ and learn tips and best practises in [this blog post](https://www.adyen.com/know
 
 ### Webhook setup
 
-In the [Balance Platform Customer Area](https://balanceplatform-test.adyen.com/balanceplatform) in the `Developers → Webhooks` section, 
-create a new `Configuration` webhook.
+In the [Customer Area](https://ca-test.adyen.com/ca/) in the `Developers → Webhooks` section `Platforms` tab, create a new `Configuration` webhook.
 
 A good practice is to set up basic authentication, copy the generated HMAC Key and store it as an environment variable. 
 The application will use this to ensure the integrity of the incoming webhook requests.
