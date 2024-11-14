@@ -189,6 +189,29 @@ public class DashboardController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    /**
+     * Displays the TransferInstruments using the Adyen Onboarding component
+     *
+     * This demonstrates how to integrate the Adyen web component that fetches and
+     * displays the transfer instruments
+     *
+     * @return
+     */
+    @PostMapping("/getTransferInstruments")
+    ResponseEntity<SessionResponse> getTransferInstruments() {
+
+        if (getUserIdOnSession() == null) {
+            log.warn("User is not logged in");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Perform session call to obtain a valid Session token
+        SessionRequest sessionRequest = getSessionRequest("manageTransferInstrumentComponent");
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
     // define SessionRequest object
     private SessionRequest getSessionRequest(String role) {
         SessionRequest sessionRequest = new SessionRequest()
