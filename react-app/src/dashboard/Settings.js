@@ -14,112 +14,126 @@ import '@adyen/kyc-components/styles.css';
 
 
 export default function Settings() {
-
-    async function sessionRequest() {
-        try {
-            const response = await fetch('/api/dashboard/getTransferInstruments', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} ${response.statusText}`);
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error("sessionRequest error: ", error);
-            throw error;
+    const [session, setSession] = React.useState(null)
+    const containerRef = React.useRef(null);
+  
+      async function sessionRequest() {
+          try {
+              const response = await fetch('/api/dashboard/getTransferInstruments', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+              });
+  
+              if (!response.ok) {
+                  throw new Error(`Error: ${response.status} ${response.statusText}`);
+              }
+  
+              return await response.json();
+          } catch (error) {
+              console.error("sessionRequest error: ", error);
+              throw error;
+          }
+      }
+  
+      async function getUser() {
+              try {
+                  const response = await fetch('/api/dashboard/getUser', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                  });
+  
+                  if (!response.ok) {
+                      throw new Error(`Error: ${response.status} ${response.statusText}`);
+                  }
+  
+                  return await response.json();
+              } catch (error) {
+                  console.error("getUser error: ", error);
+                  throw error;
+              }
+          }
+  
+      React.useEffect(() => {
+        async function getSession() {
+          const session = await sessionRequest();
+          setSession(session)
         }
-    }
-
-    async function getUser() {
-            try {
-                const response = await fetch('/api/dashboard/getUser', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+        getSession()
+      }, [])
+  
+      React.useEffect(() => {
+        function getSdkToken() {
+          const sessionResponse = sessionRequest();
+          console.log("refresh token", sessionResponse.token);
+  
+          return sessionResponse.token;
+      }
+  
+        async function loadComponent() {
+            const user = await getUser();
+            console.log("session exists", session)
+      
+            const adyenKycHandler = new AdyenKyc({
+                locale: 'en-US',
+                country: 'US',
+                environment: 'https://test.adyen.com',
+                sdkToken: session.token, //token,
+                getSdkToken
+              });
+      
+              
+                const manageTransferInstrumentComponent = adyenKycHandler
+                  .create('manageTransferInstrumentComponent', {
+                    legalEntityId: user.legalEntityId,
+                    onAdd: (legalEntityId) => {
+                      console.log("onAdd");
                     },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status} ${response.statusText}`);
-                }
-
-                return await response.json();
-            } catch (error) {
-                console.error("getUser error: ", error);
-                throw error;
+                    onEdit: (transferInstrumentId, legalEntityId) => {
+                      console.log("onEdit");
+                    },
+                    onRemoveSuccess: (transferInstrumentId, legalEntityId) => {
+                      console.log("onRemoveSuccess");
+                    }, // Optional
+                  })
+                  .mount(containerRef.current); // Mount to the container you created
+           
             }
-        }
-
-    async function initializeCore() {
-
-        const session = await sessionRequest();
-
-        const user = await getUser();
-
-        const adyenKycHandler = new AdyenKyc({
-            locale: 'en-US',
-            country: 'US',
-            environment: 'https://test.adyen.com',
-            sdkToken: session.token, //token,
-            getSdkToken
-          });
-
-        const manageTransferInstrumentComponent = adyenKycHandler
-            .create('manageTransferInstrumentComponent', {
-             legalEntityId: user.legalEntityId,
-             onAdd: (legalEntityId) => {console.log("onAdd")},
-             onEdit: (transferInstrumentId, legalEntityId) => { console.log("onEdit")},
-             onRemoveSuccess: (transferInstrumentId, legalEntityId) => {console.log("onRemoveSuccess")}, // Optional
-             //onInitiateRemove: (console.log("onInitiateRemove")) => {} // Optional. The minimum library version is 3.30
-            })
-            .mount('#manage-transfer-instrument-container'); // Mount to the container you created
-
-    }
-
-    initializeCore();
-
-    function getSdkToken() {
-        const session = sessionRequest();
-        console.log(session.token);
-
-        return session.token;
-//      return fetch('https://api.yourcompany.com/adyen-onboarding-sdk-token',
-//            { "policy": { "roles": ["manageTransferInstrumentComponent"] } });
-    }
-
-    return (
-        <Box sx={{ display: 'flex' }}>
-
-          <DashboardHeader/>
-
-          <DashboardDrawer/>
-
-            <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  width="100%"
-                  sx={{ p: 3 }}
-            >
-
-                <Toolbar />
-
-                <Divider sx={{ padding: 1 }}>
-                    <Chip label="Settings" variant="elevated" sx={{ minWidth: 100, fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
-                </Divider>
-
-                <Paper sx={{ width: '100%' }}>
-                    <div id="manage-transfer-instrument-container"></div>
-                </Paper>
-
-                <br/><br/>
-
-            </Box>
-        </Box>
-  );
-}
+  
+        if(session) loadComponent()
+  
+      },[session])
+  
+      return (
+          <Box sx={{ display: 'flex' }}>
+  
+            <DashboardHeader/>
+  
+            <DashboardDrawer/>
+  
+              <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    width="100%"
+                    sx={{ p: 3 }}
+              >
+  
+                  <Toolbar />
+  
+                  <Divider sx={{ padding: 1 }}>
+                      <Chip label="Settings" variant="elevated" sx={{ minWidth: 100, fontSize: "20px", backgroundColor: "#0abf53", color: "white" }}/>
+                  </Divider>
+  
+                  <Paper sx={{ width: '100%', display: session ? 'fixed': 'none'}}>
+                      <div ref={containerRef}></div>
+                  </Paper>
+                  <br/><br/>
+  
+              </Box>
+          </Box>
+    );
+  }
