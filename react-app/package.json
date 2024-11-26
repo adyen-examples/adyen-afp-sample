@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@adyen/adyen-platform-experience-web": "^1.1.1",
-    "@adyen/kyc-components": "^3.32.3",
+    "@adyen/kyc-components": "file:adyen-kyc-components-3.33.0.tgz",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.1.0",
