@@ -1,10 +1,12 @@
 package com.adyen.model;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PolicyResource {
 
     private String accountHolderId;
+    private String legalEntityId;
     private String type;
 
     public String getAccountHolderId() {
@@ -23,6 +25,14 @@ public class PolicyResource {
         this.type = type;
     }
 
+    public String getLegalEntityId() {
+        return legalEntityId;
+    }
+
+    public void setLegalEntityId(String legalEntityId) {
+        this.legalEntityId = legalEntityId;
+    }
+
     public PolicyResource accountHolderId(String accountHolderId) {
         this.accountHolderId = accountHolderId;
         return this;
@@ -30,6 +40,11 @@ public class PolicyResource {
 
     public PolicyResource type(String type) {
         this.type = type;
+        return this;
+    }
+
+    public PolicyResource legalEntityId(String legalEntityId) {
+        this.legalEntityId = legalEntityId;
         return this;
     }
 
