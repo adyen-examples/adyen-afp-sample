@@ -1,7 +1,5 @@
 package com.adyen.model;
 
-import java.security.Policy;
-
 public class SessionRequest {
 
     private String allowOrigin;
