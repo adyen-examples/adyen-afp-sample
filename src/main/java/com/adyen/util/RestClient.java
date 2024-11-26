@@ -28,7 +28,7 @@ public class RestClient {
         // Set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-API-Key", this.getApplicationProperty().getBclApiKey());
+        headers.set("X-API-Key", apiKey);
 
         HttpEntity<SessionRequest> entity = new HttpEntity<>(payload, headers);
 
@@ -39,11 +39,4 @@ public class RestClient {
         return response.getBody();
     }
 
-    public void setApplicationProperty(ApplicationProperty applicationProperty) {
-        this.applicationProperty = applicationProperty;
-    }
-
-    public ApplicationProperty getApplicationProperty() {
-        return applicationProperty;
-    }
 }
