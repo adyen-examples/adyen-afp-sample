@@ -35,21 +35,43 @@ export default function Settings() {
         }
     }
 
+    async function getUser() {
+            try {
+                const response = await fetch('/api/dashboard/getUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("getUser error: ", error);
+                throw error;
+            }
+        }
+
     async function initializeCore() {
+
+        const session = await sessionRequest();
+
+        const user = await getUser();
 
         const adyenKycHandler = new AdyenKyc({
             locale: 'en-US',
             country: 'US',
-            environment: 'test', // test or live 'https://test.adyen.com',
-            sdkToken: await sessionRequest, //token,
-            sessionRequest //getSdkToken
+            environment: 'https://test.adyen.com',
+            sdkToken: session.token, //token,
+            getSdkToken
           });
-
-        const legalEntityId = ""
 
         const manageTransferInstrumentComponent = adyenKycHandler
             .create('manageTransferInstrumentComponent', {
-             legalEntityId: "legalEntityId",
+             legalEntityId: user.legalEntityId,
              onAdd: (legalEntityId) => {console.log("onAdd")},
              onEdit: (transferInstrumentId, legalEntityId) => { console.log("onEdit")},
              onRemoveSuccess: (transferInstrumentId, legalEntityId) => {console.log("onRemoveSuccess")}, // Optional
@@ -61,10 +83,14 @@ export default function Settings() {
 
     initializeCore();
 
-//    function getSdkToken() {
+    function getSdkToken() {
+        const session = sessionRequest();
+        console.log(session.token);
+
+        return session.token;
 //      return fetch('https://api.yourcompany.com/adyen-onboarding-sdk-token',
 //            { "policy": { "roles": ["manageTransferInstrumentComponent"] } });
-//    }
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>

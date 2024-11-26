@@ -3,10 +3,10 @@ package com.adyen.controller;
 import com.adyen.config.ApplicationProperty;
 import com.adyen.model.*;
 import com.adyen.model.balanceplatform.AccountHolder;
-import com.adyen.model.legalentitymanagement.LegalEntity;
 import com.adyen.model.legalentitymanagement.OnboardingLink;
 import com.adyen.service.ConfigurationAPIService;
 import com.adyen.service.LegalEntityManagementAPIService;
+import com.adyen.service.UserService;
 import com.adyen.util.LegalEntityHandler;
 import com.adyen.util.RestClient;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +35,8 @@ public class DashboardController extends BaseController {
     private RestClient restClient;
     @Autowired
     private ApplicationProperty applicationProperty;
+    @Autowired
+    private UserService userService;
 
 
     /**
@@ -44,29 +45,14 @@ public class DashboardController extends BaseController {
      * @return
      */
     @PostMapping("/getUser")
-    ResponseEntity<User> getUser() {
+    public ResponseEntity<User> getUser() {
 
-        if (getUserIdOnSession() == null) {
+        if (getUserOnSession() == null) {
             log.warn("User is not logged in");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // retrieve Account Holder
-        Optional<AccountHolder> accountHolder = getConfigurationAPIService().getAccountHolder(getUserIdOnSession());
-
-        return accountHolder.map(response -> {
-                    // get Legal Entity
-                    LegalEntity legalEntity = getLegalEntityManagementAPIService().get(accountHolder.get().getLegalEntityId());
-
-                    User user = getLegalEntityHandler().getUserFromLegalEntity(legalEntity);
-                    user.setStatus(getConfigurationAPIService().getAccountHolderStatus(accountHolder.get()));
-                    return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
-                })
-                .orElseGet(() -> {
-                            log.warn("User not found id: " + getUserIdOnSession());
-                            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-                        }
-                );
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(getUserOnSession());
     }
 
     @PostMapping("/getOnboardingLink")
@@ -117,8 +103,8 @@ public class DashboardController extends BaseController {
         }
 
         // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = getSessionRequest("Transactions Overview Component: View");
-        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+        SessionRequest sessionRequest = getSessionRequest(getUserIdOnSession());
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), getApplicationProperty().getBclApiKey(), sessionRequest);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
@@ -160,8 +146,8 @@ public class DashboardController extends BaseController {
         }
 
         // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = getSessionRequest("Payouts Overview Component: View");
-        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+        SessionRequest sessionRequest = getSessionRequest(getUserIdOnSession());
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), getApplicationProperty().getBclApiKey(), sessionRequest);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
@@ -183,8 +169,8 @@ public class DashboardController extends BaseController {
         }
 
         // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = getSessionRequest("Reports Overview Component: View");
-        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+        SessionRequest sessionRequest = getSessionRequest(getUserIdOnSession());
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), getApplicationProperty().getBclApiKey(), sessionRequest);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
@@ -206,22 +192,40 @@ public class DashboardController extends BaseController {
         }
 
         // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = getSessionRequest("manageTransferInstrumentComponent");
-        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+        SessionRequest sessionRequest = getOnboardingSessionRequest(getUserOnSession().getLegalEntityId());
+        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), getApplicationProperty().getLemApiKey(), sessionRequest);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     // define SessionRequest object
-    private SessionRequest getSessionRequest(String role) {
+    private SessionRequest getSessionRequest(String accountHolderId) {
         SessionRequest sessionRequest = new SessionRequest()
                 .allowOrigin(getApplicationProperty().getComponentsAllowOrigin())
                 .product("platform")
                 .policy(new SessionRequestPolicy()
                         .resources(List.of(new PolicyResource()
-                                .accountHolderId(getUserIdOnSession())
+                                .accountHolderId(accountHolderId)
                                 .type("accountHolder")))
-                        .roles(List.of(role)));
+                        .roles(List.of(
+                                "Transactions Overview Component: View",
+                                "Payouts Overview Component: View",
+                                "Reports Overview Component: View")));
+        return sessionRequest;
+    }
+
+    // define SessionRequest object
+    private SessionRequest getOnboardingSessionRequest(String legalEntityId) {
+        SessionRequest sessionRequest = new SessionRequest()
+                .allowOrigin(getApplicationProperty().getComponentsAllowOrigin())
+                .product("onboarding")
+                .policy(new SessionRequestPolicy()
+                        .resources(List.of(new PolicyResource()
+                                .legalEntityId(legalEntityId)
+                                .type("legalEntity")))
+                        .roles(List.of(
+                                "createTransferInstrumentComponent",
+                                "manageTransferInstrumentComponent")));
         return sessionRequest;
     }
 
@@ -263,5 +267,13 @@ public class DashboardController extends BaseController {
 
     public void setApplicationProperty(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }
