@@ -19,10 +19,7 @@ public class RestClient {
 
     private final Logger log = LoggerFactory.getLogger(RestClient.class);
 
-    @Autowired
-    private ApplicationProperty applicationProperty;
-
-    public SessionResponse call(String url, SessionRequest payload) {
+    public SessionResponse call(String url, String apiKey, SessionRequest payload) {
 
         log.info("call {}", url);
 
