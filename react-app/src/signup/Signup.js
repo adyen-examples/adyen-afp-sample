@@ -8,6 +8,7 @@ import Footer from "../layout/Footer.js";
 import SmallBanner from "../layout/SmallBanner.js";
 import SoleProprietorshipSignupForm from "./SoleProprietorshipSignupForm.js";
 import OrganizationSignupForm from "./OrganizationSignupForm.js";
+import IndividualSignupForm from "./IndividualSignupForm.js";
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -38,12 +39,16 @@ function Signup() {
                 onChange={handleTabChange} aria-label="disabled tabs example"
                 textColor="secondary" indicatorColor="secondary">
                 <Tab value="soleproprietorship" label="Sole Proprietorship" />
-               <Tab value="organization" label="Organization" />
+                <Tab value="individual" label="Individual" />
+                <Tab value="organization" label="Organization" />
             </Tabs>
             <br/>
 
             <Box hidden={value !== "soleproprietorship"}>
                 <SoleProprietorshipSignupForm/>
+            </Box>
+            <Box hidden={value !== "individual"}>
+                <IndividualSignupForm/>
             </Box>
             <Box hidden={value !== "organization"}>
                 <OrganizationSignupForm/>
