@@ -19,11 +19,12 @@ ports:
   - name: AfP Sample App frontend
     port: 3000
     visibility: public
-    onOpen: open-preview
+    onOpen: open-browser
 
   - name: AfP Sample App backend
     port: 8080
     visibility: private
+    onOpen: ignore
 
 vscode:
   extensions:
