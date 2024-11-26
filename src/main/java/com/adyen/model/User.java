@@ -9,6 +9,8 @@ public class User {
     private String location;
     private AccountHolderStatus status;
     private String type;
+    private String accountHolderId;
+    private String legalEntityId;
 
     public AccountHolderStatus getStatus() {
         return status;
@@ -40,5 +42,21 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getAccountHolderId() {
+        return accountHolderId;
+    }
+
+    public void setAccountHolderId(String accountHolderId) {
+        this.accountHolderId = accountHolderId;
+    }
+
+    public String getLegalEntityId() {
+        return legalEntityId;
+    }
+
+    public void setLegalEntityId(String legalEntityId) {
+        this.legalEntityId = legalEntityId;
     }
 }
