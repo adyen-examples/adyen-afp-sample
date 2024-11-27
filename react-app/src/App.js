@@ -8,6 +8,8 @@ import Products from './dashboard/Products.js';
 import Transactions from './dashboard/Transactions.js';
 import Payouts from './dashboard/Payouts.js';
 import Reports from './dashboard/Reports.js';
+import TransferInstruments from './dashboard/TransferInstruments.js';
+import AddTransferInstrument from './dashboard/AddTransferInstrument.js';
 import Settings from './dashboard/Settings.js';
 import Login from './signup/Login.js';
 
@@ -23,6 +25,8 @@ function App() {
           <Route exact path="/transactions" element={<Transactions />} />
           <Route exact path="/payouts" element={<Payouts />} />
           <Route exact path="/reports" element={<Reports />} />
+          <Route exact path="/transferInstruments" element={<TransferInstruments />} />
+          <Route exact path="/addTransferInstrument" element={<AddTransferInstrument />} />
           <Route exact path="/settings" element={<Settings />} />
          </Routes>
     </Router>
