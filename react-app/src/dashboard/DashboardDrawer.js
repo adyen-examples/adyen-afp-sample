@@ -13,6 +13,8 @@ import Home from '@mui/icons-material/Home';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import PaymentIcon from '@mui/icons-material/Payment';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -84,7 +86,7 @@ export default function DashboardDrawer() {
             <ListItem disablePadding button component={RouterLink} to={"/reports/"}>
               <ListItemButton>
                 <ListItemIcon>
-                  <AccountBalanceIcon />
+                  <AssessmentIcon />
                 </ListItemIcon>
                 <ListItemText primary="Reports" />
               </ListItemButton>
@@ -92,6 +94,14 @@ export default function DashboardDrawer() {
         </List>
         <Divider />
         <List>
+            <ListItem disablePadding button component={RouterLink} to={"/transferInstruments/"}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <PaymentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Transfer Instruments" />
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding button component={RouterLink} to={"/settings/"}>
               <ListItemButton>
                 <ListItemIcon>
