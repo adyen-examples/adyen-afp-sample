@@ -7,25 +7,16 @@ test('Homepage', async ({ page }) => {
 });
 
 test('Goto Signup', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveTitle(/AfP MyPlatform/);
-
   await page.goto('/signup');
   await expect(page.locator('text="Create an account"')).toBeVisible();
 });
 
 test('Goto Login', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveTitle(/AfP MyPlatform/);
-
   await page.goto('/login');
   await expect(page.locator('text="Login"')).toBeVisible();
 });
 
 test('Invalid Login', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveTitle(/AfP MyPlatform/);
-
   await page.goto('/login');
   await expect(page.locator('text="Login"')).toBeVisible();
 
