@@ -5,10 +5,11 @@ import com.adyen.model.*;
 import com.adyen.model.balanceplatform.AccountHolder;
 import com.adyen.model.legalentitymanagement.LegalEntity;
 import com.adyen.model.legalentitymanagement.OnboardingLink;
+import com.adyen.model.sessionauthentication.AuthenticationSessionResponse;
 import com.adyen.service.ConfigurationAPIService;
 import com.adyen.service.LegalEntityManagementAPIService;
+import com.adyen.service.SessionAuthenticationAPIService;
 import com.adyen.util.LegalEntityHandler;
-import com.adyen.util.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +27,13 @@ public class DashboardController extends BaseController {
     private final Logger log = LoggerFactory.getLogger(DashboardController.class);
 
     @Autowired
+    private SessionAuthenticationAPIService sessionAuthenticationAPIService;
+    @Autowired
     private ConfigurationAPIService configurationAPIService;
     @Autowired
     private LegalEntityManagementAPIService legalEntityManagementAPIService;
     @Autowired
     private LegalEntityHandler legalEntityHandler;
-    @Autowired
-    private RestClient restClient;
     @Autowired
     private ApplicationProperty applicationProperty;
 
@@ -101,29 +101,6 @@ public class DashboardController extends BaseController {
     }
 
     /**
-     * Displays the AccountHolder transactions using the Adyen Transactions component
-     *
-     * This demonstrates how to integrate the Adyen web component that fetches and
-     * displays the transactions
-     *
-     * @return
-     */
-    @PostMapping("/getTransactions")
-    ResponseEntity<SessionResponse> getTransactions() {
-
-        if (getUserIdOnSession() == null) {
-            log.warn("User is not logged in");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = getSessionRequest("Transactions Overview Component: View");
-        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
-
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-    }
-
-    /**
      * Displays the AccountHolder transactions in a custom view
      *
      * This demonstrates how to fetch the AccountHolder transactions via API and
@@ -144,62 +121,46 @@ public class DashboardController extends BaseController {
     }
 
     /**
-     * Displays the Account Holder Payouts using the Adyen Payouts component
-     *
-     * This demonstrates how to integrate the Adyen web component that fetches and
-     * displays the payouts
+     * Returns a valid session token that can be used by the Adyen web components
      *
      * @return
      */
-    @PostMapping("/getPayouts")
-    ResponseEntity<SessionResponse> getPayouts() {
+    @PostMapping("/getSessionToken")
+    ResponseEntity<AuthenticationSessionResponse> getSessionToken() {
+
+        AuthenticationSessionResponse token;
 
         if (getUserIdOnSession() == null) {
             log.warn("User is not logged in");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = getSessionRequest("Payouts Overview Component: View");
-        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
+        try {
 
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-    }
+            // Obtain a valid Session token
+            Optional<AuthenticationSessionResponse> authenticationSessionResponse = getSessionAuthenticationAPIService()
+                    .getSession("getUserIdOnSession()", getApplicationProperty().getComponentsAllowOrigin());
 
-    /**
-     * Displays the Account Holder Reports using the Adyen Reports component
-     *
-     * This demonstrates how to integrate the Adyen web component that fetches and
-     * displays the reports
-     *
-     * @return
-     */
-    @PostMapping("/getReports")
-    ResponseEntity<SessionResponse> getReports() {
+            if (authenticationSessionResponse.isPresent()) {
+                token = authenticationSessionResponse.get();
+            } else {
+                log.error("Session token is not found");
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-        if (getUserIdOnSession() == null) {
-            log.warn("User is not logged in");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e.getCause());
+            return new ResponseEntity<>(new AuthenticationSessionResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        // Perform session call to obtain a valid Session token
-        SessionRequest sessionRequest = getSessionRequest("Reports Overview Component: View");
-        SessionResponse response = restClient.call(getApplicationProperty().getSessionAuthenticationApiUrl(), sessionRequest);
-
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    // define SessionRequest object
-    private SessionRequest getSessionRequest(String role) {
-        SessionRequest sessionRequest = new SessionRequest()
-                .allowOrigin(getApplicationProperty().getComponentsAllowOrigin())
-                .product("platform")
-                .policy(new SessionRequestPolicy()
-                        .resources(List.of(new PolicyResource()
-                                .accountHolderId(getUserIdOnSession())
-                                .type("accountHolder")))
-                        .roles(List.of(role)));
-        return sessionRequest;
+    public SessionAuthenticationAPIService getSessionAuthenticationAPIService() {
+        return sessionAuthenticationAPIService;
+    }
+
+    public void setSessionAuthenticationAPIService(SessionAuthenticationAPIService sessionAuthenticationAPIService) {
+        this.sessionAuthenticationAPIService = sessionAuthenticationAPIService;
     }
 
     public ConfigurationAPIService getConfigurationAPIService() {
@@ -224,14 +185,6 @@ public class DashboardController extends BaseController {
 
     public void setLegalEntityHandler(LegalEntityHandler legalEntityHandler) {
         this.legalEntityHandler = legalEntityHandler;
-    }
-
-    public RestClient getRestClient() {
-        return restClient;
-    }
-
-    public void setRestClient(RestClient restClient) {
-        this.restClient = restClient;
     }
 
     public ApplicationProperty getApplicationProperty() {
