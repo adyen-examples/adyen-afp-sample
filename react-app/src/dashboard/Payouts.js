@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
-
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Toolbar from '@mui/material/Toolbar';
 import Divider from '@mui/material/Divider';
-
-import { useNavigate } from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
 
@@ -19,11 +14,9 @@ import "@adyen/adyen-platform-experience-web/adyen-platform-experience-web.css";
 
 export default function Payouts() {
 
-    const navigate = useNavigate()
-
     async function sessionRequest() {
         try {
-            const response = await fetch('/api/dashboard/getPayouts', {
+            const response = await fetch('/api/dashboard/getSessionToken', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

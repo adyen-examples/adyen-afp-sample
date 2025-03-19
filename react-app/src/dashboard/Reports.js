@@ -18,7 +18,7 @@ export default function Reports() {
 
     async function sessionRequest() {
         try {
-            const response = await fetch('/api/dashboard/getReports', {
+            const response = await fetch('/api/dashboard/getSessionToken', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
