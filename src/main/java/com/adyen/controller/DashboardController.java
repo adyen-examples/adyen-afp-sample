@@ -139,13 +139,13 @@ public class DashboardController extends BaseController {
 
             // Obtain a valid Session token
             Optional<AuthenticationSessionResponse> authenticationSessionResponse = getSessionAuthenticationAPIService()
-                    .getSession("getUserIdOnSession()", getApplicationProperty().getComponentsAllowOrigin());
+                    .getSession(getUserIdOnSession(), getApplicationProperty().getComponentsAllowOrigin());
 
             if (authenticationSessionResponse.isPresent()) {
                 token = authenticationSessionResponse.get();
             } else {
-                log.error("Session token is not found");
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                log.error("Session token cannot be created");
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
             return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
