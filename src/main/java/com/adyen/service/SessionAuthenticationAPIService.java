@@ -82,7 +82,7 @@ public class SessionAuthenticationAPIService {
             apiClient = new Client(
                     applicationProperty.getBclApiKey(),
                     Environment.TEST); // change to LIVE on prod
-            apiClient.setApplicationName("adyen-afp-sample adyen-for-platform-onboarding-example adyen-web/1.3.1");
+            apiClient.setApplicationName(ApplicationProperty.APPLICATION_NAME);
         }
 
         return apiClient;
