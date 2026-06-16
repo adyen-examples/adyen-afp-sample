@@ -82,6 +82,7 @@ public class SessionAuthenticationAPIService {
             apiClient = new Client(
                     applicationProperty.getBclApiKey(),
                     Environment.TEST); // change to LIVE on prod
+            apiClient.setApplicationName(ApplicationProperty.APPLICATION_NAME);
         }
 
         return apiClient;

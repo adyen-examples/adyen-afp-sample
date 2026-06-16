@@ -136,6 +136,7 @@ public class ManagementAPIService {
             apiClient = new Client(
                     applicationProperty.getApiKey(),
                     Environment.TEST); // change to LIVE on prod
+            apiClient.setApplicationName(ApplicationProperty.APPLICATION_NAME);
         }
 
         return apiClient;
