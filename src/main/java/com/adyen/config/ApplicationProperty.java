@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationProperty {
 
-    public static final String APPLICATION_NAME = "adyen-afp-sample adyen-for-platform-onboarding-example adyen-web/1.3.1";
+    public static final String APPLICATION_NAME = "[adyen-afp-sample hosted-onboarding-example adyen-platform-experience-web/1.3.1]";
 
     @Value("${ADYEN_API_KEY}")
     private String apiKey;
